@@ -26,7 +26,7 @@ function App() {
       <Route path="/municipal/resolved-unresolved-cases" element={<ResolvedUnresolvedCases />} />
       <Route path="/admin/manage-users" element={<ManageUsers />} />
       <Route path="/rewards" element={<RewardLogs />} />
-       <Route path="/rewards" element={<RewardsPage />} />
+       <Route path="/rewards-page" element={<RewardsPage />} />
       <Route path="/report-dumpsite" element={<ReportDumpsite />} />
       <Route path="/admin/view-dumpsites" element={<ViewIllegalDumpsites />} />
       <Route path="/collector" element={<CollectorDashboard />} />

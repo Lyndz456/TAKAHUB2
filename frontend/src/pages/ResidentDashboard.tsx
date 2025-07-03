@@ -32,7 +32,7 @@ function ResidentDashboard() {
           <div className="nav-left">
             <button onClick={() => navigate('/resident')}>Home</button>
             <button onClick={() => navigate('/book-pickup')}>Book Pickup</button>
-            <button onClick={() => navigate('/rewards')}>Rewards</button>
+            <button onClick={() => navigate('/rewards-page')}>Rewards</button>
           </div>
           <div className="nav-right">
             <button className="logout-btn" onClick={logout}>Log Out</button>
