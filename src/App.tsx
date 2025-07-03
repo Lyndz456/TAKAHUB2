@@ -13,6 +13,7 @@ import RewardsPage from "./pages/RewardsPage";
 import ResolvedUnresolvedCases from "./pages/ResolvedUnresolvedCases";
 import ManageUsers from "./pages/MangeUsers";
 import RewardLogs from './pages/RewardLogs';
+import ViewIllegalDumpsites from './pages/ViewIllegalDumpsites';
 function App() {
   return (
     <Routes>
@@ -27,6 +28,7 @@ function App() {
       <Route path="/rewards" element={<RewardLogs />} />
        <Route path="/rewards" element={<RewardsPage />} />
       <Route path="/report-dumpsite" element={<ReportDumpsite />} />
+      <Route path="/admin/view-dumpsites" element={<ViewIllegalDumpsites />} />
       <Route path="/collector" element={<CollectorDashboard />} />
 <Route path="/admin" element={<AdminPanel />} />
 <Route path="/municipal" element={<MunicipalView />} />

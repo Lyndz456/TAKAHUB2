@@ -1,0 +1,55 @@
+/* src/pages/ViewIllegalDumpsites.css */
+
+.admin-dumpsite-page {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f9f4;
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #56ab2f;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.topbar button {
+  background: none;
+  color: white;
+  border: none;
+  font-weight: bold;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.topbar .logout-btn {
+  background-color: white;
+  color: #56ab2f;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.active-tab {
+  text-decoration: underline;
+}
+
+.dumpsite-content {
+  padding: 2rem;
+}
+
+.dumpsite-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.dumpsite-card {
+  background: white;
+  border: 1px solid #d8e7d8;
+  border-left: 6px solid #56ab2f;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}

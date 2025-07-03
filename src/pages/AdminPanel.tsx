@@ -55,8 +55,15 @@ function AdminPanel() {
 <div className="action-buttons">
   <button className="admin-btn" onClick={() => navigate('/admin/manage-users')}>Manage Users</button>
   <button className="admin-btn" onClick={() => navigate('/rewards')}>View Reward Logs</button>
-  <button className="admin-btn" onClick={() => navigate('/municipal/reports')}>Generate Reports</button>
-  <button className="admin-btn" onClick={() => navigate('/municipal')}>View Illegal Dumpsites</button>
+  <button className="admin-btn" onClick={() => navigate('/municipal/resolved-unresolved-cases')}>Generate Reports</button>
+  <button
+  onClick={() => navigate('/admin/view-dumpsites')}
+  className="admin-btn"
+>
+  View Illegal Dumpsites
+</button>
+
+
 </div>
 
 
