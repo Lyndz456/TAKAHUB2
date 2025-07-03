@@ -1,0 +1,121 @@
+.pickup-wrapper {
+  max-width: 650px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fefefc;
+  border-radius: 12px;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.07);
+}
+
+.pickup-banner {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.pickup-banner h1 {
+  color: #317e4e;
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.pickup-banner p {
+  color: #555;
+  font-size: 1rem;
+}
+
+.pickup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.pickup-form label {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.pickup-form input,
+.pickup-form select {
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  margin-top: 0.3rem;
+}
+
+.pickup-form button {
+  margin-top: 1.5rem;
+  background-color: #56ab2f;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.confirmation {
+  color: #28a745;
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Footer */
+.pickup-footer {
+  text-align: center;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.pickup-footer h3 {
+  color: #204e2a;
+  margin-bottom: 0.5rem;
+}
+
+/* Animations */
+.slide-down {
+  animation: slideDown 0.7s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.7s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

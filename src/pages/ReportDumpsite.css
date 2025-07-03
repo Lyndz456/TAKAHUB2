@@ -1,0 +1,104 @@
+/* src/pages/ReportDumpsite.css */
+
+.report-wrapper {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #f6fff6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 128, 0, 0.1);
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.report-form input[type='text'],
+.report-form textarea,
+.report-form input[type='file'] {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.report-form button {
+  background-color: #56ab2f;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.report-form button:hover {
+  background-color: #3b8c22;
+}
+
+.image-preview img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.confirmation-message {
+  background-color: #dfffdc;
+  padding: 1rem;
+  border-left: 5px solid #56ab2f;
+  border-radius: 6px;
+  color: #2f6627;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-down {
+  animation: slideDown 0.5s ease forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}

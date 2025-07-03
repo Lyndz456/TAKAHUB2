@@ -1,0 +1,131 @@
+.collector-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: #fff9f2;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 230px;
+  background-color: #204e2a;
+  color: white;
+  padding: 2rem 1rem;
+}
+
+.sidebar .logo {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav li {
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #317e4e;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.sidebar nav li:hover {
+  background-color: #3e9e60;
+  transition: 0.3s ease;
+}
+
+/* Main area */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fefdf9;
+  padding: 0;
+}
+
+/* Topbar at absolute top */
+.topbar {
+  background-color: #56ab2f;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Centered Welcome */
+.welcome-box {
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.requests-section {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+/* Card Styling */
+.request-card {
+  background: #fffefb;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.btn-group {
+  margin-top: 1rem;
+}
+
+.btn-group button {
+  margin-right: 0.7rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.accept {
+  background-color: #9ad176;
+}
+
+.reject {
+  background-color: #e06c6c;
+}
+
+.reason-input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}

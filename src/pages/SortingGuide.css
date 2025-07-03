@@ -1,0 +1,140 @@
+.sorting-guide {
+  min-height: 100vh; /* ✅ makes it fill full viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sorting-guide {
+  padding: 2rem;
+  background-color: #e7f5e9;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #264d28;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #444;
+}
+
+.waste-cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.card {
+  background: white;
+  width: 220px;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.emoji {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+  color: #56ab2f;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.footer-text {
+  margin-top: 3rem;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #2c6e49;
+}
+
+/* Animations */
+@keyframes slideInLeft {
+  from { transform: translateX(-50%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(50%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-30%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.8s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 1.2s ease-in;
+}
+
+.slide-down {
+  animation: slideDown 0.8s ease-out;
+}
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+.back-btn,
+.pickup-btn {
+  padding: 0.7rem 1.4rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.back-btn {
+  background-color: #56ab2f;
+  color: white;
+}
+
+.pickup-btn {
+  background-color: #fbd38d;
+  color: #333;
+}
+
+.back-btn:hover {
+  background-color: #3f8921;
+}
+
+.pickup-btn:hover {
+  background-color: #f6c46d;
+}
