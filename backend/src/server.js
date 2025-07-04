@@ -10,12 +10,14 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const pool = require('./config/db');
 
-dotenv.config();
+require('dotenv').config(); // This must come before you use process.env
+
 const app = express();
 
 app.use(express.json());
+
 app.use('/api/users', userRoutes);
-app.use('/api', authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/waste', wasteRoutes);
 app.use('/api/pickups', pickupRoutes);
 app.use('/api/reports', reportRoutes);

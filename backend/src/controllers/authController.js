@@ -3,30 +3,29 @@ const bcrypt = require('bcrypt');
 const db = require('../config/db');
 
 exports.loginUser = async (req, res) => {
-  const { user_email, user_password } = req.body;
+  const { user_id, user_password } = req.body;
 
   try {
     const result = await db.query(
-      'SELECT * FROM systemusers WHERE user_email = $1',
-      [user_email]
+      'SELECT * FROM systemusers WHERE user_id = $1',
+      [user_id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid user ID or password' });
     }
 
     const user = result.rows[0];
 
     const isMatch = await bcrypt.compare(user_password, user.user_password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid user ID or password' });
     }
 
-    // Generate JWT
     const token = jwt.sign(
-      { user_id: user.user_id, role_id: user.role_id },
+      { user_id: user.user_id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
     );
 
     res.status(200).json({
@@ -36,12 +35,12 @@ exports.loginUser = async (req, res) => {
         user_id: user.user_id,
         user_name: user.user_name,
         user_email: user.user_email,
-        role_id: user.role_id
+        role: user.role
       }
     });
 
   } catch (err) {
-    console.error(err);
+    console.error('Login error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 };

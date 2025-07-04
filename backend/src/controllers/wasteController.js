@@ -1,15 +1,16 @@
 const pool = require('../config/db');
 
-// Updated controller to handle rewards
+// Submit waste sorting record and calculate rewards
 const submitWasteSorting = async (req, res) => {
   const {
-    user_id,
     date_sorted,
     plastic_weight,
     organic_weight,
     hazardous_weight,
     notes
   } = req.body;
+
+  const user_id = req.user.user_id; // ✅ from token
 
   try {
     // 1. Insert the waste sorting record
@@ -20,7 +21,7 @@ const submitWasteSorting = async (req, res) => {
       [user_id, date_sorted, plastic_weight, organic_weight, hazardous_weight, notes]
     );
 
-    // 2. Calculate reward points (2 points per kg)
+    // 2. Calculate reward points
     const totalWeight = (plastic_weight || 0) + (organic_weight || 0) + (hazardous_weight || 0);
     const rewardPoints = totalWeight * 2;
 
@@ -33,7 +34,7 @@ const submitWasteSorting = async (req, res) => {
     let newTotal = rewardPoints;
     let badge = '';
 
-    // 4. Badge assignment logic
+    // 4. Badge logic
     const getBadge = (points) => {
       if (points >= 100) return 'Gold';
       if (points >= 50) return 'Silver';
@@ -70,12 +71,12 @@ const submitWasteSorting = async (req, res) => {
       total_points: newTotal,
       badge_awarded: badge
     });
+
   } catch (error) {
     console.error('Error submitting waste sorting record:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
-
 
 module.exports = {
   submitWasteSorting

@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { submitWasteSorting } = require('../controllers/wasteController');
+const verifyToken = require('../middleware/authMiddleware');
 
-// Route to submit waste sorting record
-router.post('/submit', submitWasteSorting);
+router.post('/sort', verifyToken, submitWasteSorting);
 
 module.exports = router;
+

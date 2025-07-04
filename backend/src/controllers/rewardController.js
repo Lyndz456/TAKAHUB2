@@ -1,7 +1,8 @@
 const pool = require('../config/db');
 
+// Fetch rewards for the currently logged-in user
 const getUserRewards = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.user_id; // ✅ Extracted from verified JWT
 
   try {
     const result = await pool.query(

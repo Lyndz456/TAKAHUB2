@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const rewardController = require('../controllers/rewardController');
+const { getUserRewards } = require('../controllers/rewardController');
+const verifyToken = require('../middleware/authMiddleware');
 
-// Route to get rewards for a specific user
-router.get('/:user_id', rewardController.getUserRewards);
+router.get('/:user_id', verifyToken, getUserRewards);
 
 module.exports = router;
