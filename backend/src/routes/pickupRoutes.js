@@ -5,11 +5,13 @@ const {
   editPickupRequest,
   cancelPickupRequest
 } = require('../controllers/pickupController');
+const verifyToken = require('../middleware/authMiddleware');
 
 
-router.post('/submit', submitPickupRequest);
-router.put('/edit/:request_id', editPickupRequest);
-router.delete('/cancel/:request_id', cancelPickupRequest);
+router.post('/book', verifyToken, submitPickupRequest);
 
+router.put('/edit/:request_id', verifyToken, editPickupRequest);
+
+router.delete('/cancel/:request_id', verifyToken, cancelPickupRequest);
 
 module.exports = router;

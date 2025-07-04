@@ -3,7 +3,8 @@ const pool = require('../config/db');
 // Submit a new pickup request
 const submitPickupRequest = async (req, res) => {
   try {
-    const { user_id, pickup_date } = req.body;
+    const {pickup_date, location } = req.body;
+    const user_id = req.user.user_id; // ✅ Extracted from JWT
 
     // Check if a request already exists for this user and date
     const existing = await pool.query(
@@ -16,20 +17,24 @@ const submitPickupRequest = async (req, res) => {
     }
 
     const result = await pool.query(
-      `INSERT INTO systempickuprequests (user_id, pickup_date)
-       VALUES ($1, $2)
+      `INSERT INTO systempickuprequests (user_id, pickup_date, location)
+       VALUES ($1, $2, $3)
        RETURNING *`,
-      [user_id, pickup_date]
+      [user_id, pickup_date, location]
     );
 
-    res.status(201).json({ message: 'Pickup request submitted', data: result.rows[0] });
+    res.status(201).json({
+      message: 'Pickup request submitted',
+      data: result.rows[0]
+    });
+
   } catch (error) {
     console.error('Error submitting pickup request:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-//Edit a request
+// Edit an existing pickup request
 const editPickupRequest = async (req, res) => {
   const { request_id } = req.params;
   const { pickup_date } = req.body;
@@ -52,14 +57,14 @@ const editPickupRequest = async (req, res) => {
       message: "Pickup request updated successfully",
       data: result.rows[0]
     });
+
   } catch (error) {
     console.error("Error editing pickup request:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-
-//Delete a Request
+// Cancel a pickup request
 const cancelPickupRequest = async (req, res) => {
   try {
     const { request_id } = req.params;
@@ -76,13 +81,12 @@ const cancelPickupRequest = async (req, res) => {
     }
 
     res.json({ message: 'Pickup request cancelled' });
+
   } catch (error) {
     console.error('Error canceling pickup request:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-
 
 module.exports = {
   submitPickupRequest,

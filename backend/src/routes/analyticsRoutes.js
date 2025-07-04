@@ -1,10 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const analyticsController = require('../controllers/analyticsController');
+const {
+  getWasteSummary,
+  getRewardsSummary,
+  getTopUsers
+} = require('../controllers/analyticsController');
 
-// Analytics endpoints
-router.get('/waste-summary', analyticsController.getWasteSummary);
-router.get('/rewards-summary', analyticsController.getRewardsSummary);
-router.get('/top-users', analyticsController.getTopUsers);
+const verifyToken = require('../middleware/authMiddleware');
+
+// Routes
+router.get('/waste-summary', verifyToken, getWasteSummary);
+router.get('/rewards-summary', verifyToken, getRewardsSummary);
+router.get('/top-users', verifyToken, getTopUsers);
 
 module.exports = router;

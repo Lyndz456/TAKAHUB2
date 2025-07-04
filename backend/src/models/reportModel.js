@@ -11,10 +11,10 @@ const addIllegalDumpsiteReport = async (user_id, report_location, report_descrip
   return result.rows[0];
 };
 
-// Get all reports
+// Get all reports (newest first)
 const getAllReports = async () => {
   const result = await pool.query(
-    `SELECT * FROM systemillegaldumpsitesreports ORDER BY report_id DESC`
+    `SELECT * FROM systemillegaldumpsitesreports ORDER BY reported_at DESC`
   );
   return result.rows;
 };
@@ -22,7 +22,9 @@ const getAllReports = async () => {
 // Get reports submitted by a specific user
 const getReportsByUser = async (user_id) => {
   const result = await pool.query(
-    `SELECT * FROM systemillegaldumpsitesreports WHERE user_id = $1 ORDER BY report_id DESC`,
+    `SELECT * FROM systemillegaldumpsitesreports 
+     WHERE user_id = $1 
+     ORDER BY reported_at DESC`,
     [user_id]
   );
   return result.rows;
@@ -31,5 +33,5 @@ const getReportsByUser = async (user_id) => {
 module.exports = {
   addIllegalDumpsiteReport,
   getAllReports,
-  getReportsByUser
+  getReportsByUser,
 };
