@@ -1,15 +1,36 @@
+// src/pages/ResidentDashboard.tsx
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useUser } from '../context/UserContext';
-import { pickupRequests } from '../data/pickupData';
+import axios from 'axios';
 import './ResidentDashboard.css';
 
 function ResidentDashboard() {
   const navigate = useNavigate();
   const { logout, user } = useUser();
 
-  // Filter requests that belong to this resident
-  const myRequests = pickupRequests.filter(req => req.user_id === user?.username);
-  const latestRequest = myRequests[myRequests.length - 1];
+  const [points, setPoints] = useState<number>(0);
+  const [pickups, setPickups] = useState<number>(0);
+  const [badges, setBadges] = useState<number>(0);
+  const [latestRequest, setLatestRequest] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/user-dashboard/${user?.username}`);
+        setPoints(res.data.points || 0);
+        setPickups(res.data.totalPickups || 0);
+        setBadges(res.data.badges || 0);
+        setLatestRequest(res.data.latestRequest || null);
+      } catch (error) {
+        console.error('❌ Error fetching dashboard data:', error);
+      }
+    };
+
+    if (user?.username) {
+      fetchDashboardData();
+    }
+  }, [user?.username]);
 
   return (
     <div className="resident-dashboard">
@@ -18,16 +39,15 @@ function ResidentDashboard() {
         <div className="logo">♻️</div>
         <nav>
           <ul>
-            <li onClick={() => navigate('/resident')}>Dashboard</li>
+            
             <li onClick={() => navigate('/book-pickup')}>Pickups</li>
             <li onClick={() => navigate('/sorting-guide')}>Sorting Guide</li>
           </ul>
         </nav>
       </aside>
 
-      {/* Main Area */}
+      {/* Main Content */}
       <div className="main-content">
-        {/* Top Navbar */}
         <header className="topbar">
           <div className="nav-left">
             <button onClick={() => navigate('/resident')}>Home</button>
@@ -39,13 +59,12 @@ function ResidentDashboard() {
           </div>
         </header>
 
-        {/* Welcome Section */}
         <section className="dashboard-body">
           <h1>WELCOME!!</h1>
           <div className="stats-box">
-            <p>Points: <strong>120</strong></p>
-            <p>Pickups: <strong>{myRequests.length}</strong></p>
-            <p>Badges: <strong>3</strong></p>
+            <p>Points: <strong>{points}</strong></p>
+            <p>Pickups: <strong>{pickups}</strong></p>
+            <p>Badges: <strong>{badges}</strong></p>
           </div>
 
           {latestRequest ? (
@@ -66,7 +85,6 @@ function ResidentDashboard() {
             <button className="cta-btn" onClick={() => navigate('/sorting-guide')}>
               How to sort waste
             </button>
-
             <button className="cta-btn" onClick={() => navigate('/report-dumpsite')}>
               Report Illegal Dumpsites
             </button>

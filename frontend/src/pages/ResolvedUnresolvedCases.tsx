@@ -1,22 +1,57 @@
-// src/pages/ResolvedUnresolvedCases.tsx
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Document, Packer, Paragraph, TextRun } from 'docx';
+import { saveAs } from 'file-saver';
 import './ResolvedUnresolvedCases.css';
 
 function ResolvedUnresolvedCases() {
   const navigate = useNavigate();
 
-  // Placeholder array - replace with backend data later
-  const reports = [
-    // Leave array empty for now; backend will populate
-  ];
+  // ✅ Simulate report data
+  const [reports, setReports] = useState([
+    { id: 1, location: "Kasarani", status: "resolved", type: "Plastic" },
+    { id: 2, location: "Westlands", status: "unresolved", type: "Metal" },
+    { id: 3, location: "South B", status: "unresolved", type: "Paper" },
+  ]);
 
-  const generateReport = () => {
-    // Placeholder logic: when backend is connected, this will:
-    // 1. Group and total waste types.
-    // 2. Identify top locations with frequent pickup requests.
-    // 3. Format the report and trigger PDF or summary download.
-    console.log('Generating waste analysis report...');
-    alert('Report generated based on currently displayed data.');
+  // ✅ Mark report as resolved locally
+  const markAsResolved = (id: number) => {
+    const updatedReports = reports.map((report) =>
+      report.id === id ? { ...report, status: "resolved" } : report
+    );
+    setReports(updatedReports);
+  };
+
+  const generateReport = async () => {
+    const paragraphs = [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: "Waste Analysis Report",
+            bold: true,
+            size: 32,
+          }),
+        ],
+      }),
+      new Paragraph(""),
+      ...reports.map((report, index) =>
+        new Paragraph(
+          `${index + 1}. Location: ${report.location}, Status: ${report.status}, Type: ${report.type}`
+        )
+      ),
+    ];
+
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: paragraphs,
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, "Waste_Analysis_Report.docx");
   };
 
   return (
@@ -25,28 +60,51 @@ function ResolvedUnresolvedCases() {
       <header className="topbar">
         <div className="nav-left">
           <button onClick={() => navigate('/municipal')}>Home</button>
-          <button disabled className="active-tab">Reports</button>
         </div>
         <div className="nav-right">
           <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
         </div>
       </header>
 
+      {/* Body */}
       <main className="reports-container">
         <h1>Resolved & Unresolved Cases</h1>
 
-        {/* Placeholder for reports */}
         <div className="reports-grid">
-          {/* Map over backend reports here later */}
-          <p>No reports available. Connect to backend to display cases.</p>
+          {reports.length > 0 ? (
+            reports.map((report) => (
+              <div key={report.id} className="report-card">
+                <h3>
+                  {report.status === "resolved"
+                    ? "✅ Resolved Dumpsite Case"
+                    : "🚨 Unresolved Dumpsite Case"}
+                </h3>
+                <p><strong>Location:</strong> {report.location}</p>
+                <p><strong>Type:</strong> {report.type}</p>
+                <p><strong>Status:</strong> {report.status}</p>
+
+                {report.status !== "resolved" && (
+                  <button
+                    className="resolve-btn"
+                    onClick={() => markAsResolved(report.id)}
+                  >
+                    Mark as Resolved
+                  </button>
+                )}
+              </div>
+            ))
+          ) : (
+            <p>No reports available.</p>
+          )}
         </div>
 
-        {/* Report Generation Button */}
-        <div className="report-footer">
-          <button className="generate-report-btn" onClick={generateReport}>
-            📊 Generate Waste Analysis Report
-          </button>
-        </div>
+        {reports.length > 0 && (
+          <div className="report-footer visible">
+            <button className="generate-report-btn" onClick={generateReport}>
+              📊 Generate Waste Analysis Report
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );

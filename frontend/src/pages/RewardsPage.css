@@ -1,8 +1,9 @@
 .rewards-page {
   font-family: 'Segoe UI', sans-serif;
   padding: 2rem;
-  background-color: #f0fff0;
+  background: linear-gradient(to bottom right, #e7f5e9, #f5fff7);
   min-height: 100vh;
+  color: #2e7d32;
 }
 
 .topbar {
@@ -12,15 +13,21 @@
   padding: 1rem 2rem;
   border-radius: 10px;
   margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0, 128, 0, 0.1);
 }
 
 .nav-left button {
   background: none;
   border: none;
-  margin-right: 1rem;
+  margin-right: 1.2rem;
   font-weight: bold;
   cursor: pointer;
   color: #2e7d32;
+  font-size: 1rem;
+}
+
+.nav-left button:hover {
+  text-decoration: underline;
 }
 
 .active-tab {
@@ -35,52 +42,129 @@
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .rewards-content h1 {
   text-align: center;
   margin-bottom: 2rem;
+  font-size: 2rem;
 }
 
 .reward-boxes {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 
 .reward-card {
   background-color: #ffffff;
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  width: 180px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 128, 0, 0.1);
+  width: 200px;
   text-align: center;
+  transition: transform 0.3s ease;
+  border: 2px solid #c8e6c9;
+}
+
+.reward-card:hover {
+  transform: translateY(-5px);
+}
+
+.reward-card h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #388e3c;
+}
+
+.reward-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .reward-message {
   text-align: center;
   font-weight: bold;
   font-size: 1.2rem;
-  color: #388e3c;
+  color: #1b5e20;
+  margin-top: 1rem;
+  animation: fadeIn 1s ease-in-out;
 }
+
 .download-section {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   text-align: center;
+  padding: 1rem 2rem;
+  background-color: #f1fdf4;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 128, 0, 0.07);
+  animation: slideInUp 0.7s ease;
 }
 
-.download-btn {
-  background-color: #56ab2f;
-  color: white;
-  padding: 0.8rem 2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2);
-  transition: background-color 0.3s ease;
+.download-section ul {
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+  line-height: 1.6;
 }
 
-.download-btn:hover {
-  background-color: #4a9528;
+.download-section h3 {
+  color: #2e7d32;
+  font-size: 1.4rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.badge-guide {
+  margin-top: 2.5rem;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 128, 0, 0.07);
+  text-align: left;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.badge-guide h2 {
+  color: #2e7d32;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.badge-guide ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.badge-guide li {
+  margin-bottom: 1rem;
+  padding-left: 0.3rem;
+  font-weight: 500;
 }

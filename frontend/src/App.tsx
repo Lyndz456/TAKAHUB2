@@ -14,6 +14,7 @@ import ResolvedUnresolvedCases from "./pages/ResolvedUnresolvedCases";
 import ManageUsers from "./pages/MangeUsers";
 import RewardLogs from './pages/RewardLogs';
 import ViewIllegalDumpsites from './pages/ViewIllegalDumpsites';
+import CollectionHistory from "./pages/CollectionHistory";
 function App() {
   return (
     <Routes>
@@ -30,6 +31,7 @@ function App() {
       <Route path="/report-dumpsite" element={<ReportDumpsite />} />
       <Route path="/admin/view-dumpsites" element={<ViewIllegalDumpsites />} />
       <Route path="/collector" element={<CollectorDashboard />} />
+      <Route path="/collection-history" element={<CollectionHistory />} />
 <Route path="/admin" element={<AdminPanel />} />
 <Route path="/municipal" element={<MunicipalView />} />
     </Routes>

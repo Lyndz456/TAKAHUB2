@@ -62,7 +62,7 @@ function CollectorDashboard() {
           <ul>
             <li onClick={() => navigate('/collector')}>Dashboard</li>
             <li onClick={() => navigate('/collector/pickup-requests')}>Pickup Requests</li>
-            <li onClick={() => navigate('/collector/collection-history')}>Collection History</li>
+            <li onClick={() => navigate('/collection-history')}>Collection History</li>
           </ul>
         </nav>
       </div>

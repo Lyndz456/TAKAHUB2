@@ -25,7 +25,7 @@ function MunicipalView() {
         <header className="topbar">
           <div className="nav-left">
             <button onClick={() => navigate('/municipal')}>Home</button>
-            <button onClick={() => navigate('/municipal/reports')}>Reports</button>
+            
           </div>
           <div className="nav-right">
             <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
@@ -46,10 +46,7 @@ function MunicipalView() {
             </p>
           </div>
 
-          <div className="action-buttons">
-            <button className="pdf-btn">Export to PDF</button>
-            <button className="map-btn">View Map View</button>
-          </div>
+         
         </section>
       </div>
     </div>
