@@ -25,22 +25,28 @@ const generateUserId = async (role) => {
 exports.registerUser = async (req, res) => {
   const { user_name, user_email, user_password, user_phone_number, role } = req.body;
 
+  
+
   try {
+// ✅ Only allow residents to register themselves
+    if (role.toLowerCase() !== 'resident') {
+      return res.status(403).json({ message: 'Only residents are allowed to register directly' });
+    }
+
     const hashedPassword = await bcrypt.hash(user_password, 10);
     const user_id = await generateUserId(role);
 
     await db.query(
-      'INSERT INTO systemusers (user_id, user_name, user_email, user_password, user_phone_number) VALUES ($1, $2, $3, $4, $5)',
-      [user_id, user_name, user_email, hashedPassword, user_phone_number]
+      'INSERT INTO systemusers (user_id, user_name, user_email, user_password, user_phone_number, role) VALUES ($1, $2, $3, $4, $5, $6)',
+      [user_id, user_name, user_email, hashedPassword, user_phone_number, role]
     );
 
     res.status(201).json({
-      message: 'User registered successfully',
+      message: 'Resident registered successfully',
       user: { user_id, user_name, user_email, role }
     });
   } catch (err) {
     console.error('Registration error:', err.message);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error:err.message });
   }
 };
-

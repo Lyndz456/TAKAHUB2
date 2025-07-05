@@ -22,12 +22,10 @@
     "concurrently": "^9.2.0"
   },
   "dependencies": {
-<<<<<<< HEAD
     "axios": "^1.10.0",
     "docx": "^9.5.1",
-    "file-saver": "^2.0.5"
-=======
+    "file-saver": "^2.0.5",
     "express": "^5.1.0"
->>>>>>> a0f326a76a9bba51eb1eb58cb62a5b41e2655f45
+
   }
 }
