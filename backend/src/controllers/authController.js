@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
 
+console.log("Login endpoint hit!");
+
 exports.loginUser = async (req, res) => {
   const { user_id, user_password } = req.body;
 
@@ -11,16 +13,24 @@ exports.loginUser = async (req, res) => {
       [user_id]
     );
 
+    console.log('DB result:', result.rows);
+
     if (result.rows.length === 0) {
       return res.status(401).json({ message: 'Invalid user ID or password' });
     }
 
     const user = result.rows[0];
 
+console.log('User fetched from DB:', user);
+console.log("Incoming user_id:", user_id);
+console.log("Incoming password:", user_password);
+
     const isMatch = await bcrypt.compare(user_password, user.user_password);
+        console.log('Password match?', isMatch);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid user ID or password' });
     }
+
 
     const token = jwt.sign(
       { user_id: user.user_id, role: user.role },

@@ -5,37 +5,60 @@ import './LoginPage.css';
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (username.trim() === '' || password.trim() === '') {
-      setError('Please fill in both fields.');
+  if (username.trim() === '' || password.trim() === '') {
+    setError('Please fill in both fields.');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: username,
+        user_password: password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.message || 'Login failed');
       return;
     }
 
-    // 🔐 Temporary frontend-only password check
-    if (password !== 'password123') {
-      setError('Invalid credentials. Please try again.');
-      return;
-    }
+    // ✅ Save token and redirect based on role
+    localStorage.setItem('token', data.token);
+    const role = data.user.role.toLowerCase();
 
-    const upperUsername = username.toUpperCase();
-
-    if (upperUsername.startsWith('R')) {
+    if (role === 'resident') {
       navigate('/resident');
-    } else if (upperUsername.startsWith('SA')) {
-      navigate('/admin');
-    } else if (upperUsername.startsWith('M')) {
-      navigate('/municipal');
-    } else if (upperUsername.startsWith('C')) {
+    } else if (role === 'collector') {
       navigate('/collector');
+    } else if (role === 'municipal authority') {
+      navigate('/municipal');
+    } else if (role === 'admin') {
+      navigate('/admin');
     } else {
-      setError('Invalid username format (e.g. R1, SA2, M3, C4)');
+      setError('Unknown role');
     }
-  };
+
+  } catch (err) {
+    console.error('Login error:', err);
+    setError('Login failed');
+  }
+};
+
 
   return (
     <div className="login-wrapper">
@@ -51,19 +74,42 @@ function LoginPage() {
 
           <input
             type="text"
-            placeholder="Username"
+            placeholder="User ID (e.g. R1)"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: 10,
+                top: 10,
+                cursor: 'pointer',
+                color: '#888'
+              }}
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </span>
+          </div>
+
+          <label style={{ marginTop: '0.5rem' }}>
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+            />
+            {' '}Remember me
+          </label>
 
           <button type="submit">Login</button>
 

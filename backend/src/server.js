@@ -7,6 +7,7 @@ const pickupRoutes = require('./routes/pickupRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const rewardRoutes = require('./routes/rewardRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const cors = require('cors');
 
 const pool = require('./config/db');
 
@@ -16,6 +17,7 @@ const app = express();
 
 app.use(express.json());
 
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/waste', wasteRoutes);

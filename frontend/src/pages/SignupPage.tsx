@@ -9,6 +9,7 @@ function SignupPage() {
     email: '',
     phone: '',
     password: '',
+    role: 'resident'
   });
 
   const [message, setMessage] = useState('');
@@ -17,13 +18,38 @@ function SignupPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // simulate a successful signup (replace later with real backend)
-    const fakeUsername = 'R' + Math.floor(Math.random() * 100 + 1);
-    setMessage(`Signup successful! Your username is ${fakeUsername}`);
-    setTimeout(() => navigate("/"), 3000);
+    const requestData = {
+      user_name: formData.name,
+      user_email: formData.email,
+      user_phone_number: formData.phone,
+      user_password: formData.password,
+      role: formData.role.toLowerCase()
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(`Signup successful! Your user ID is ${data.user.user_id}`);
+        setTimeout(() => navigate("/"), 3000); // Redirect after success
+      } else {
+        setMessage(data.message || 'Signup failed.');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      setMessage('An error occurred while signing up.');
+    }
   };
 
   return (
