@@ -62,6 +62,13 @@ function SignupPage() {
           required
           onChange={handleChange}
         />
+         <input
+          name="role"
+          type="role"
+          placeholder="Role:(Resident)"
+          required
+          onChange={handleChange}
+        />
 
         <button type="submit">Sign Up</button>
 
