@@ -21,7 +21,7 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/waste', wasteRoutes);
-app.use('/api/pickups', pickupRoutes);
+app.use('/api/pickup', pickupRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/rewards', rewardRoutes);
 app.use('/api/analytics', analyticsRoutes);
