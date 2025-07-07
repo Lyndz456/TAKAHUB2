@@ -1,19 +1,19 @@
 const pool = require('../config/db');
 
-// Submit waste sorting record and calculate rewards
+// ✅ Submit waste sorting record and calculate rewards
 const submitWasteSorting = async (req, res) => {
   const {
     date_sorted,
     plastic_weight,
     organic_weight,
     hazardous_weight,
-    notes
+    notes,
+    user_id,           // passed from frontend
+    request_id         // for marking pickup completed
   } = req.body;
 
-  const user_id = req.user.user_id; // ✅ from token
-
   try {
-    // 1. Insert the waste sorting record
+    // 1. Insert waste sorting record
     const result = await pool.query(
       `INSERT INTO systemwastesortingrecords (
         user_id, date_sorted, plastic_weight, organic_weight, hazardous_weight, notes
@@ -25,7 +25,7 @@ const submitWasteSorting = async (req, res) => {
     const totalWeight = (plastic_weight || 0) + (organic_weight || 0) + (hazardous_weight || 0);
     const rewardPoints = totalWeight * 2;
 
-    // 3. Fetch existing reward
+    // 3. Fetch or insert reward
     const existingReward = await pool.query(
       'SELECT * FROM systemrewards WHERE user_id = $1',
       [user_id]
@@ -34,7 +34,6 @@ const submitWasteSorting = async (req, res) => {
     let newTotal = rewardPoints;
     let badge = '';
 
-    // 4. Badge logic
     const getBadge = (points) => {
       if (points >= 100) return 'Gold';
       if (points >= 50) return 'Silver';
@@ -42,7 +41,6 @@ const submitWasteSorting = async (req, res) => {
       return null;
     };
 
-    // 5. Update or insert reward
     if (existingReward.rows.length > 0) {
       const currentPoints = existingReward.rows[0].reward_points;
       newTotal = currentPoints + rewardPoints;
@@ -63,9 +61,16 @@ const submitWasteSorting = async (req, res) => {
       );
     }
 
-    // 6. Respond
+    // 4. Mark pickup as completed
+    if (request_id) {
+      await pool.query(
+        'UPDATE systempickuprequests SET status = $1 WHERE request_id = $2',
+        ['completed', request_id]
+      );
+    }
+
     res.status(201).json({
-      message: 'Waste sorted successfully and reward updated',
+      message: 'Waste recorded and rewards updated.',
       record: result.rows[0],
       reward_points_earned: rewardPoints,
       total_points: newTotal,
@@ -73,11 +78,42 @@ const submitWasteSorting = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error submitting waste sorting record:', error);
+    console.error('Error in waste sorting submission:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
 
+// ✅ Get reward stats for resident
+const getRewardStats = async (req, res) => {
+  const user_id = req.user.user_id;
+
+  try {
+    const rewardRes = await pool.query(
+      'SELECT reward_points, reward_badge FROM systemrewards WHERE user_id = $1',
+      [user_id]
+    );
+
+    const wasteRes = await pool.query(
+      `SELECT 
+         COALESCE(SUM(plastic_weight + organic_weight + hazardous_weight), 0) AS total_weight
+       FROM systemwastesortingrecords
+       WHERE user_id = $1`,
+      [user_id]
+    );
+
+    res.status(200).json({
+      reward_points: rewardRes.rows[0]?.reward_points || 0,
+      reward_badge: rewardRes.rows[0]?.reward_badge || null,
+      total_weight: wasteRes.rows[0].total_weight || 0
+    });
+
+  } catch (error) {
+    console.error('Error fetching reward stats:', error);
+    res.status(500).json({ error: 'Failed to load reward stats' });
+  }
+};
+
 module.exports = {
-  submitWasteSorting
+  submitWasteSorting,
+  getRewardStats // ✅ Export it here
 };
