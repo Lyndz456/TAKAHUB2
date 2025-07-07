@@ -2,20 +2,46 @@
 import './RewardsPage.css';
 import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 function RewardsPage() {
   const navigate = useNavigate();
   const { user, logout } = useUser();
+  const [reward, setReward] = useState({
+    reward_points: 0,
+    reward_badge: '',
+    last_updated: '',
+  });
 
-  // These will later be fetched from the backend
-  const totalPoints = 0;
-  const pickupsCompleted = 0;
+  const [pickupsCompleted, setPickupsCompleted] = useState(0);
+  const [totalWeight, setTotalWeight] = useState(0);
 
-  const badge =
-    totalPoints >= 100 ? '🥇 Gold' :
-    totalPoints >= 50 ? '🥈 Silver' :
-    totalPoints >= 20 ? '🥉 Bronze' :
-    '🔰 Newbie';
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    // Fetch reward points + badge
+    fetch('http://localhost:5000/api/rewards/my-rewards', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.reward) setReward(data.reward);
+      });
+
+    // Fetch total pickups + waste weight
+    fetch('http://localhost:5000/api/waste/stats', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPickupsCompleted(data.total_pickups || 0);
+        setTotalWeight(data.total_weight || 0);
+      });
+  }, []);
 
   return (
     <div className="rewards-page">
@@ -35,37 +61,31 @@ function RewardsPage() {
         <h1>🌟 Your Recycling Rewards</h1>
 
         <div className="reward-boxes">
-          <div className="reward-boxes">
-  <div className="reward-card">
-    <h3>Total Points</h3>
-    <p>{totalPoints} pts</p>
-  </div>
+          <div className="reward-card">
+            <h3>Total Points</h3>
+            <p>{reward.reward_points} pts</p>
+          </div>
 
-  <div className="reward-card">
-    <h3>Pickups Completed</h3>
-    <p>{pickupsCompleted}</p>
-  </div>
+          <div className="reward-card">
+            <h3>Pickups Completed</h3>
+            <p>{pickupsCompleted}</p>
+          </div>
 
-  <div className="reward-card">
-    <h3>Current Badge</h3>
-    <p>{badge}</p>
-  </div>
+          <div className="reward-card">
+            <h3>Current Badge</h3>
+            <p>{reward.reward_badge || '🔰 Newbie'}</p>
+          </div>
 
-  <div className="reward-card">
-    <h3>Waste Disposed</h3>
-    <p>0 KGs</p> {/* 🔗 This will later be fetched from backend */}
-  </div>
-</div>
-
+          <div className="reward-card">
+            <h3>Waste Disposed</h3>
+            <p>{totalWeight.toFixed(2)} KGs</p>
+          </div>
         </div>
 
         <div className="badge-guide">
           <h2>🏆 How to Earn Points & Badges</h2>
           <ol>
-            <li>📦 Book pickups for sorted waste — 10 points per pickup</li>
-            <li>🔁 Consistently recycle weekly — 20 points bonus</li>
-            <li>🚮 Report illegal dumpsites — 15 points per valid report</li>
-            <li>📸 Attach photo proof for bonus points</li>
+            <li>📦 Book pickups for sorted waste — 2 points per KG</li>
             <li>🎖️ Reach 20 pts for Bronze, 50 for Silver, 100+ for Gold</li>
           </ol>
         </div>

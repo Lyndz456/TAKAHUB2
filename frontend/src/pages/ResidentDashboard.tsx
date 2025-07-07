@@ -16,12 +16,28 @@ function ResidentDashboard() {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      const token = localStorage.getItem('token');
       try {
-        const res = await axios.get(`http://localhost:5000/api/user-dashboard/${user?.username}`);
-        setPoints(res.data.points || 0);
-        setPickups(res.data.totalPickups || 0);
-        setBadges(res.data.badges || 0);
-        setLatestRequest(res.data.latestRequest || null);
+        // Fetch reward stats
+        const rewardRes = await axios.get('http://localhost:5000/api/waste/stats', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setPoints(rewardRes.data.total_points || 0);
+        setPickups(rewardRes.data.total_pickups || 0);
+        setBadges(
+          rewardRes.data.total_points >= 100 ? 3 :
+          rewardRes.data.total_points >= 50 ? 2 :
+          rewardRes.data.total_points >= 20 ? 1 : 0
+        );
+
+        // Fetch latest pickup request
+        const reqRes = await axios.get('http://localhost:5000/api/pickup/my-requests', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (reqRes.data.requests && reqRes.data.requests.length > 0) {
+          setLatestRequest(reqRes.data.requests[0]);
+        }
       } catch (error) {
         console.error('❌ Error fetching dashboard data:', error);
       }
@@ -39,7 +55,6 @@ function ResidentDashboard() {
         <div className="logo">♻️</div>
         <nav>
           <ul>
-            
             <li onClick={() => navigate('/book-pickup')}>Pickups</li>
             <li onClick={() => navigate('/sorting-guide')}>Sorting Guide</li>
           </ul>

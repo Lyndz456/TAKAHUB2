@@ -1,6 +1,5 @@
 // src/pages/BookPickup.tsx
 import { useState } from 'react';
-import { pickupRequests } from '../data/pickupData';
 import './BookPickup.css';
 
 function BookPickup() {
@@ -12,6 +11,7 @@ function BookPickup() {
 
   const [confirmation, setConfirmation] = useState('');
   const [pickupId, setPickupId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPickupData({
@@ -30,27 +30,48 @@ function BookPickup() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setConfirmation('');
 
-    const newId = Math.floor(Math.random() * 9000 + 1000);
-    setPickupId(newId);
+    try {
+      const token = localStorage.getItem('token'); // Ensure token is stored at login
 
-    pickupRequests.push({
-      request_id: newId,
-      pickup_date: pickupData.date,
-      location: pickupData.location,
-      waste_type: pickupData.wasteTypes.join(', '), // join multiple types
-      status: 'pending',
-    });
+      if (!token) {
+        setConfirmation('Authentication required. Please log in.');
+        setLoading(false);
+        return;
+      }
 
-    setConfirmation(`Pickup request submitted! Your ID is #${newId}`);
-    console.log('Pickup Submitted:', {
-      request_id: newId,
-      ...pickupData,
-    });
+      const response = await fetch('http://localhost:5000/api/pickup/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          pickup_date: pickupData.date,
+          location: pickupData.location,
+          waste_type: pickupData.wasteTypes.join(', '),
+        }),
+      });
 
-    setPickupData({ date: '', location: '', wasteTypes: [] });
+      const data = await response.json();
+
+      if (response.ok) {
+        setPickupId(data.request.request_id);
+        setConfirmation(`✅ Pickup request submitted! Your ID is #${data.request.request_id}`);
+        setPickupData({ date: '', location: '', wasteTypes: [] });
+      } else {
+        setConfirmation(`❌ ${data.message || 'Pickup request failed.'}`);
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      setConfirmation('❌ An unexpected error occurred. Please try again.');
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -95,7 +116,10 @@ function BookPickup() {
           ))}
         </div>
 
-        <button type="submit">Submit Request</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit Request'}
+        </button>
+
         {confirmation && <p className="confirmation fade-in">{confirmation}</p>}
       </form>
 
