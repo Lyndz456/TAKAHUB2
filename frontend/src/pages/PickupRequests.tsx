@@ -7,6 +7,8 @@ interface WasteEntry {
   user_id: string;
   pickup_date: string;
   location: string;
+  status: string;
+  collected: boolean;
   plastic: number;
   organic: number;
   metal: number;
@@ -18,7 +20,6 @@ function PickupRequests() {
   const navigate = useNavigate();
   const [entries, setEntries] = useState<WasteEntry[]>([]);
 
-  // Load accepted requests
   useEffect(() => {
     const token = localStorage.getItem('token');
     fetch('http://localhost:5000/api/pickup/collector', {
@@ -27,24 +28,20 @@ function PickupRequests() {
       .then(res => res.json())
       .then(data => {
         const accepted = data.requests.filter((r: any) => r.status === 'accepted');
-        const withWeights = accepted.map((r: any) => ({
+        const formatted = accepted.map((r: any) => ({
           ...r,
+          collected: false,
           plastic: 0,
           organic: 0,
           metal: 0,
           ewaste: 0,
         }));
-        setEntries(withWeights);
+        setEntries(formatted);
       })
-      .catch(err => console.error('Error loading accepted pickups:', err));
+      .catch(err => console.error('Error loading pickups:', err));
   }, []);
 
-  // Handle weight field changes
-  const handleChange = (
-    id: number,
-    field: keyof WasteEntry,
-    value: number
-  ) => {
+  const handleChange = (id: number, field: keyof WasteEntry, value: number) => {
     setEntries(prev =>
       prev.map(entry =>
         entry.request_id === id ? { ...entry, [field]: value } : entry
@@ -52,7 +49,14 @@ function PickupRequests() {
     );
   };
 
-  // Submit waste and calculate rewards
+  const markAsCollected = (id: number) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.request_id === id ? { ...entry, collected: true } : entry
+      )
+    );
+  };
+
   const handleSubmit = async (entry: WasteEntry) => {
     const token = localStorage.getItem('token');
     const hazardous = entry.metal + entry.ewaste;
@@ -70,13 +74,13 @@ function PickupRequests() {
         plastic_weight: entry.plastic,
         organic_weight: entry.organic,
         hazardous_weight: hazardous,
-        notes: 'Sorted and submitted by collector',
+        notes: 'Marked collected and submitted by collector',
       }),
     });
 
     const data = await res.json();
     if (res.ok) {
-      alert(`✅ Submitted!\n+${data.reward_points_earned} points\n🏅 Badge: ${data.badge_awarded || 'None'}`);
+      alert(`✅ Waste submitted.\n+${data.reward_points_earned} pts\n🏅 Badge: ${data.badge_awarded || 'None'}`);
       setEntries(prev => prev.filter(e => e.request_id !== entry.request_id));
     } else {
       alert(`❌ ${data.message || data.error}`);
@@ -87,11 +91,11 @@ function PickupRequests() {
     <div className="pickup-requests-wrapper">
       <header className="topbar">
         <h2>Accepted Pickup Requests</h2>
-        <button onClick={() => navigate('/collector')}>⬅ Back to Dashboard</button>
+        <button onClick={() => navigate('/collector')}>⬅ Back</button>
       </header>
 
       {entries.length === 0 ? (
-        <p>No accepted pickup requests available.</p>
+        <p>No accepted requests available.</p>
       ) : (
         entries.map(entry => (
           <div key={entry.request_id} className="pickup-card">
@@ -100,54 +104,52 @@ function PickupRequests() {
             <p><strong>Date:</strong> {entry.pickup_date}</p>
             <p><strong>Location:</strong> {entry.location}</p>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit(entry);
-              }}
-            >
-              <label>Plastic (kg):</label>
-              <input
-                type="number"
-                min="0"
-                value={entry.plastic}
-                onChange={(e) =>
-                  handleChange(entry.request_id, 'plastic', Number(e.target.value))
-                }
-              />
+            {!entry.collected ? (
+              <button className="mark-collected-btn" onClick={() => markAsCollected(entry.request_id)}>
+                🚛 Mark as Collected
+              </button>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(entry);
+                }}
+              >
+                <label>Plastic (kg):</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={entry.plastic}
+                  onChange={(e) => handleChange(entry.request_id, 'plastic', Number(e.target.value))}
+                />
 
-              <label>Organic (kg):</label>
-              <input
-                type="number"
-                min="0"
-                value={entry.organic}
-                onChange={(e) =>
-                  handleChange(entry.request_id, 'organic', Number(e.target.value))
-                }
-              />
+                <label>Organic (kg):</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={entry.organic}
+                  onChange={(e) => handleChange(entry.request_id, 'organic', Number(e.target.value))}
+                />
 
-              <label>Metal (kg):</label>
-              <input
-                type="number"
-                min="0"
-                value={entry.metal}
-                onChange={(e) =>
-                  handleChange(entry.request_id, 'metal', Number(e.target.value))
-                }
-              />
+                <label>Metal (kg):</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={entry.metal}
+                  onChange={(e) => handleChange(entry.request_id, 'metal', Number(e.target.value))}
+                />
 
-              <label>E-Waste (kg):</label>
-              <input
-                type="number"
-                min="0"
-                value={entry.ewaste}
-                onChange={(e) =>
-                  handleChange(entry.request_id, 'ewaste', Number(e.target.value))
-                }
-              />
+                <label>E-Waste (kg):</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={entry.ewaste}
+                  onChange={(e) => handleChange(entry.request_id, 'ewaste', Number(e.target.value))}
+                />
 
-              <button type="submit" className="submit-btn">📤 Submit Waste</button>
-            </form>
+                <button type="submit" className="submit-btn">📤 Submit Waste</button>
+              </form>
+            )}
           </div>
         ))
       )}

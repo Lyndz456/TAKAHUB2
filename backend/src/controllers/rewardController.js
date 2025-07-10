@@ -2,7 +2,7 @@ const pool = require('../config/db');
 
 // Fetch rewards for the currently logged-in user
 const getUserRewards = async (req, res) => {
-  const user_id = req.user.user_id; // ✅ Extracted from verified JWT
+  const user_id = req.user.user_id;
 
   try {
     const result = await pool.query(
@@ -16,10 +16,13 @@ const getUserRewards = async (req, res) => {
       return res.status(404).json({ message: 'No rewards found for this user' });
     }
 
+    // ✅ Cleaned response with only necessary fields
     res.status(200).json({
-      message: 'Reward details fetched successfully',
-      reward: result.rows[0]
+      reward_points: result.rows[0].reward_points,
+      reward_badge: result.rows[0].reward_badge,
+      last_updated: result.rows[0].last_updated
     });
+
   } catch (error) {
     console.error('Error fetching user rewards:', error);
     res.status(500).json({ message: 'Server error' });

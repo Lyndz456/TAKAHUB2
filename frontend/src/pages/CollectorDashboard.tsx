@@ -7,45 +7,29 @@ interface PickupRequest {
   pickup_date: string;
   location: string;
   waste_type: string;
-  status: 'pending' | 'accepted' | 'completed';
+  status: 'pending' | 'accepted' | 'rejected';
   user_id: string;
   resident_name?: string;
   reason?: string;
 }
 
-interface WasteEntry extends PickupRequest {
-  plastic: number;
-  organic: number;
-  metal: number;
-  ewaste: number;
-}
-
 function CollectorDashboard() {
   const navigate = useNavigate();
-  const [requests, setRequests] = useState<WasteEntry[]>([]);
+  const [requests, setRequests] = useState<PickupRequest[]>([]);
   const [rejectionReasons, setRejectionReasons] = useState<{ [key: number]: string }>({});
 
-  const fetchRequests = () => {
+  useEffect(() => {
     const token = localStorage.getItem('token');
+
     fetch('http://localhost:5000/api/pickup/collector', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
-        const withWeights = data.requests.map((r: PickupRequest) => ({
-          ...r,
-          plastic: 0,
-          organic: 0,
-          metal: 0,
-          ewaste: 0,
-        }));
-        setRequests(withWeights);
+        const pending = data.requests.filter((r: any) => r.status === 'pending');
+        setRequests(pending || []);
       })
       .catch((err) => console.error('❌ Error fetching pickups:', err));
-  };
-
-  useEffect(() => {
-    fetchRequests();
   }, []);
 
   const handleAccept = async (id: number) => {
@@ -65,7 +49,7 @@ function CollectorDashboard() {
 
       if (res.ok) {
         alert(`✅ Pickup #${id} accepted.`);
-        fetchRequests();
+        setRequests((prev) => prev.filter((req) => req.request_id !== id));
       } else {
         alert(`❌ ${data.message}`);
       }
@@ -75,58 +59,15 @@ function CollectorDashboard() {
     }
   };
 
-  const handleSubmitWaste = async (entry: WasteEntry) => {
-    const token = localStorage.getItem('token');
-    const hazardous = entry.metal + entry.ewaste;
-
-    try {
-      const res = await fetch('http://localhost:5000/api/waste/sort', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          user_id: entry.user_id,
-          request_id: entry.request_id,
-          date_sorted: entry.pickup_date,
-          plastic_weight: entry.plastic,
-          organic_weight: entry.organic,
-          hazardous_weight: hazardous,
-          notes: 'Sorted by collector',
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert(`✅ Submitted. +${data.reward_points_earned} pts → Badge: ${data.badge_awarded || 'None'}`);
-        fetchRequests();
-      } else {
-        alert(`❌ ${data.message || data.error}`);
-      }
-    } catch (err) {
-      console.error('❌ Waste submit failed:', err);
-      alert('Error submitting waste');
-    }
-  };
-
-  const handleChange = (id: number, field: keyof WasteEntry, value: number) => {
-    setRequests(prev =>
-      prev.map(req =>
-        req.request_id === id ? { ...req, [field]: value } : req
-      )
-    );
-  };
-
   const handleReject = (id: number) => {
     if (!rejectionReasons[id]?.trim()) {
       alert('Please provide a reason before rejecting.');
       return;
     }
 
-    setRequests(prev =>
-      prev.map(req =>
+    // Ideally you also send this to backend, but here we're just removing
+    setRequests((prev) =>
+      prev.map((req) =>
         req.request_id === id
           ? { ...req, status: 'rejected', reason: rejectionReasons[id] }
           : req
@@ -135,7 +76,7 @@ function CollectorDashboard() {
   };
 
   const handleReasonChange = (id: number, reason: string) => {
-    setRejectionReasons(prev => ({ ...prev, [id]: reason }));
+    setRejectionReasons((prev) => ({ ...prev, [id]: reason }));
   };
 
   return (
@@ -159,7 +100,7 @@ function CollectorDashboard() {
 
         <div className="welcome-box">
           <h1>WELCOME!!</h1>
-          <h3>TODAY’S REQUESTS: {requests.filter(r => r.status === 'pending').length}</h3>
+          <h3>TODAY’S REQUESTS: {requests.length}</h3>
         </div>
 
         <div className="requests-section">
@@ -171,64 +112,22 @@ function CollectorDashboard() {
               <p><strong>Waste Type:</strong> {req.waste_type}</p>
               <p><strong>Resident:</strong> {req.resident_name || '(unknown)'}</p>
 
-              {req.status === 'pending' && (
-                <>
-                  <div className="btn-group">
-                    <button className="accept" onClick={() => handleAccept(req.request_id)}>
-                      ✅ Accept
-                    </button>
-                    <button className="reject" onClick={() => handleReject(req.request_id)}>
-                      ❌ Reject
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Enter rejection reason..."
-                    value={rejectionReasons[req.request_id] || ''}
-                    onChange={(e) => handleReasonChange(req.request_id, e.target.value)}
-                    className="reason-input"
-                  />
-                </>
-              )}
+              <div className="btn-group">
+                <button className="accept" onClick={() => handleAccept(req.request_id)}>
+                  ✅ Accept
+                </button>
+                <button className="reject" onClick={() => handleReject(req.request_id)}>
+                  ❌ Reject
+                </button>
+              </div>
 
-              {req.status === 'accepted' && (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmitWaste(req);
-                  }}
-                >
-                  <label>Plastic (kg):</label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={req.plastic}
-                    onChange={(e) => handleChange(req.request_id, 'plastic', Number(e.target.value))}
-                  />
-                  <label>Organic (kg):</label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={req.organic}
-                    onChange={(e) => handleChange(req.request_id, 'organic', Number(e.target.value))}
-                  />
-                  <label>Metal (kg):</label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={req.metal}
-                    onChange={(e) => handleChange(req.request_id, 'metal', Number(e.target.value))}
-                  />
-                  <label>E-Waste (kg):</label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={req.ewaste}
-                    onChange={(e) => handleChange(req.request_id, 'ewaste', Number(e.target.value))}
-                  />
-                  <button type="submit">📤 Submit Waste</button>
-                </form>
-              )}
+              <input
+                type="text"
+                placeholder="Enter rejection reason..."
+                value={rejectionReasons[req.request_id] || ''}
+                onChange={(e) => handleReasonChange(req.request_id, e.target.value)}
+                className="reason-input"
+              />
             </div>
           ))}
         </div>

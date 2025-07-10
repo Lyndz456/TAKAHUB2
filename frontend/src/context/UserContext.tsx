@@ -33,7 +33,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const login = (user: User) => setUser(user);
-  const logout = () => setUser(null);
+   const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
 
   return (
     <UserContext.Provider value={{ user, login, logout }}>

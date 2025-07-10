@@ -101,10 +101,18 @@ const getRewardStats = async (req, res) => {
       [user_id]
     );
 
+    // ✅ Add pickup count (status = 'completed')
+    const pickupRes = await pool.query(
+      'SELECT COUNT(*) FROM systempickuprequests WHERE user_id = $1 AND status = $2',
+      [user_id, 'completed']
+    );
+
+
     res.status(200).json({
       reward_points: rewardRes.rows[0]?.reward_points || 0,
       reward_badge: rewardRes.rows[0]?.reward_badge || null,
-      total_weight: wasteRes.rows[0].total_weight || 0
+      total_weight: wasteRes.rows[0].total_weight || 0,
+      total_pickups: Number(pickupRes.rows[0].count) || 0  // ✅ include this
     });
 
   } catch (error) {

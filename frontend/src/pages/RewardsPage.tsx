@@ -7,40 +7,51 @@ import { useEffect, useState } from 'react';
 function RewardsPage() {
   const navigate = useNavigate();
   const { user, logout } = useUser();
+
   const [reward, setReward] = useState({
     reward_points: 0,
     reward_badge: '',
     last_updated: '',
   });
-
-  const [pickupsCompleted, setPickupsCompleted] = useState(0);
-  const [totalWeight, setTotalWeight] = useState(0);
+  const [pickupsCompleted, setPickupsCompleted] = useState<number>(0);
+  const [totalWeight, setTotalWeight] = useState<number>(0);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    // Fetch reward points + badge
-    fetch('http://localhost:5000/api/rewards/my-rewards', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.reward) setReward(data.reward);
-      });
+    const fetchRewards = async () => {
+      try {
+        // ✅ Fetch rewards (flat structure)
+        const rewardRes = await fetch('http://localhost:5000/api/rewards/my-rewards', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const rewardData = await rewardRes.json();
 
-    // Fetch total pickups + waste weight
-    fetch('http://localhost:5000/api/waste/stats', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setPickupsCompleted(data.total_pickups || 0);
-        setTotalWeight(data.total_weight || 0);
-      });
+        setReward({
+          reward_points: rewardData.reward_points || 0,
+          reward_badge: rewardData.reward_badge || '',
+          last_updated: rewardData.last_updated || '',
+        });
+
+        // ✅ Fetch waste stats
+        const statRes = await fetch('http://localhost:5000/api/waste/stats', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const statData = await statRes.json();
+        setPickupsCompleted(statData.total_pickups || 0);
+        setTotalWeight(Number(statData.total_weight) || 0);
+      } catch (err) {
+        console.error('❌ Error loading rewards:', err);
+      }
+    };
+
+    fetchRewards();
+    const interval = setInterval(fetchRewards, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -77,16 +88,17 @@ function RewardsPage() {
           </div>
 
           <div className="reward-card">
-            <h3>Waste Disposed</h3>
-            <p>{totalWeight.toFixed(2)} KGs</p>
+            <h3>Total Waste</h3>
+            <p>{totalWeight.toFixed(2)} kg</p>
           </div>
         </div>
 
         <div className="badge-guide">
-          <h2>🏆 How to Earn Points & Badges</h2>
+          <h2>🏆 Badge Guide</h2>
           <ol>
-            <li>📦 Book pickups for sorted waste — 2 points per KG</li>
-            <li>🎖️ Reach 20 pts for Bronze, 50 for Silver, 100+ for Gold</li>
+            <li>🟫 20 pts = Bronze</li>
+            <li>⬜ 50 pts = Silver</li>
+            <li>🟨 100 pts = Gold</li>
           </ol>
         </div>
       </main>
