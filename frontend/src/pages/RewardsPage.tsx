@@ -59,11 +59,11 @@ function RewardsPage() {
       <header className="topbar">
         <div className="nav-left">
           <button onClick={() => navigate('/resident')}>Home</button>
-          <button onClick={() => navigate('/book-pickup')}>Book Pickup</button>
-          <button disabled className="active-tab">Rewards</button>
+          
+          
         </div>
         <div className="nav-right">
-          <span>Welcome, {user?.username}</span>
+          
           <button className="logout-btn" onClick={logout}>Logout</button>
         </div>
       </header>

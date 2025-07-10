@@ -1,8 +1,10 @@
-// src/pages/ReportDumpsite.tsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ReportDumpsite.css';
 
 function ReportDumpsite() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     location: '',
     description: '',
@@ -34,95 +36,110 @@ function ReportDumpsite() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
-  setConfirmation('');
+    e.preventDefault();
+    setLoading(true);
+    setConfirmation('');
 
-  const token = localStorage.getItem('token');
-  if (!token) {
-    setConfirmation('⚠️ You must be logged in to report a dumpsite.');
-    return;
-  }
-
-  try {
-    const form = new FormData();
-    form.append('report_location', formData.location);
-    form.append('report_description', formData.description);
-    if (formData.image) {
-      form.append('image', formData.image);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setConfirmation('⚠️ You must be logged in to report a dumpsite.');
+      return;
     }
 
-    const res = await fetch('http://localhost:5000/api/report/illegal-dumpsite', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}` // ✅ Do not manually set Content-Type
-      },
-      body: form,
-    });
+    try {
+      const form = new FormData();
+      form.append('report_location', formData.location);
+      form.append('report_description', formData.description);
+      if (formData.image) {
+        form.append('image', formData.image);
+      }
 
-    const data = await res.json();
+      const res = await fetch('http://localhost:5000/api/report/illegal-dumpsite', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: form,
+      });
 
-    if (res.ok) {
-      setConfirmation('✅ Dumpsite reported successfully! Thank you for your effort.');
-      setFormData({ location: '', description: '', image: null });
-      setPreviewUrl(null);
-    } else {
-      setConfirmation(`❌ Failed to report: ${data.message || data.error}`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setConfirmation('✅ Dumpsite reported successfully! Thank you for your effort.');
+        setFormData({ location: '', description: '', image: null });
+        setPreviewUrl(null);
+      } else {
+        setConfirmation(`❌ Failed to report: ${data.message || data.error}`);
+      }
+    } catch (err) {
+      console.error('Report error:', err);
+      setConfirmation('❌ Unexpected error. Try again.');
     }
-  } catch (err) {
-    console.error('Report error:', err);
-    setConfirmation('❌ Unexpected error. Try again.');
-  }
 
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
 
   return (
-    <div className="report-wrapper">
-      <h1 className="slide-down">🗑️ Report Illegal Dumpsite</h1>
-      <p className="fade-in">
-        Help keep your community clean! Fill in the details below and attach a photo.
-      </p>
+    <div className="report-page">
+      {/* ✅ Navigation Bar */}
+      <header className="report-navbar">
+        <h2>♻️ TAKAHUB</h2>
+        <nav>
+          <button onClick={() => navigate('/resident')}> Home</button>
+          <button onClick={handleLogout}> Log Out</button>
+        </nav>
+      </header>
 
-      <form className="report-form slide-in" onSubmit={handleSubmit}>
-        <label>Location:</label>
-        <input
-          type="text"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
+      <div className="report-wrapper">
+        <h1 className="slide-down">🗑️ Report Illegal Dumpsite</h1>
+        <p className="fade-in">
+          Help keep your community clean! Fill in the details below and attach a photo.
+        </p>
 
-        <label>Description:</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          rows={4}
-          placeholder="Describe the dump site..."
-          required
-        />
+        <form className="report-form slide-in" onSubmit={handleSubmit}>
+          <label>Location:</label>
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+          />
 
-        <label>Upload Image:</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={4}
+            placeholder="Describe the dump site..."
+            required
+          />
 
-        {previewUrl && (
-          <div className="image-preview fade-in">
-            <p>Preview:</p>
-            <img src={previewUrl} alt="Preview" />
-          </div>
-        )}
+          <label>Upload Image:</label>
+          <input type="file" accept="image/*" onChange={handleImageChange} />
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit Report'}
-        </button>
+          {previewUrl && (
+            <div className="image-preview fade-in">
+              <p>Preview:</p>
+              <img src={previewUrl} alt="Preview" />
+            </div>
+          )}
 
-        {confirmation && (
-          <p className="confirmation-message fade-in">{confirmation}</p>
-        )}
-      </form>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Submitting...' : 'Submit Report'}
+          </button>
+
+          {confirmation && (
+            <p className="confirmation-message fade-in">{confirmation}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 }
