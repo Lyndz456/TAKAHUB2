@@ -1,55 +1,56 @@
-/* src/pages/ViewIllegalDumpsites.css */
-
-.admin-dumpsite-page {
+.dumpsite-view-page {
+  padding: 2rem;
+  background-color: #f8fdf8;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f4f9f4;
   min-height: 100vh;
 }
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #56ab2f;
-  color: white;
-  padding: 1rem 2rem;
-}
-
-.topbar button {
-  background: none;
-  color: white;
-  border: none;
-  font-weight: bold;
-  margin-right: 1rem;
-  cursor: pointer;
-}
-
-.topbar .logout-btn {
-  background-color: white;
-  color: #56ab2f;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-}
-
-.active-tab {
-  text-decoration: underline;
-}
-
-.dumpsite-content {
-  padding: 2rem;
-}
-
-.dumpsite-grid {
-  display: grid;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+.dumpsite-view-page h1 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 2rem;
 }
 
 .dumpsite-card {
-  background: white;
-  border: 1px solid #d8e7d8;
-  border-left: 6px solid #56ab2f;
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border: 1px solid #d6e9c6;
+  border-left: 5px solid #56ab2f;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.dumpsite-card p {
+  margin: 0.5rem 0;
+  font-size: 1.05rem;
+  color: #333;
+}
+
+.dumpsite-card img {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.dumpsite-card button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dumpsite-card button:hover {
+  background-color: #388e3c;
+}
+
+.dumpsite-card strong {
+  color: #2e7d32;
 }

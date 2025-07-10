@@ -1,10 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { reportIllegalDumpsite } = require('../controllers/reportController');
+const {
+  reportIllegalDumpsite,
+  getResidentDumpsiteReports,
+  getAllDumpsiteReports,
+  markDumpsiteResolved
+} = require('../controllers/reportController');
 const verifyToken = require('../middleware/authMiddleware');
-const upload = require('../middleware/upload'); // ✅ import multer config
 
-// ✅ Use upload.single('image') for file handling
-router.post('/illegal-dumpsite', verifyToken, upload.single('image'), reportIllegalDumpsite);
+// Resident submits
+router.post('/illegal-dumpsite', verifyToken, reportIllegalDumpsite);
+
+// Resident views their own reports
+router.get('/my-reports', verifyToken, getResidentDumpsiteReports);
+
+// Municipal views all
+router.get('/all-reports', verifyToken, getAllDumpsiteReports);
+
+// Municipal marks report resolved
+router.post('/resolve', verifyToken, markDumpsiteResolved);
 
 module.exports = router;

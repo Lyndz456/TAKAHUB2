@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage'; // test this next
+import SignupPage from './pages/SignupPage';
 import ResidentDashboard from './pages/ResidentDashboard';
 import SortingGuide from './pages/SortingGuide';
 import BookPickup from './pages/BookPickup';
@@ -15,6 +15,7 @@ import ManageUsers from "./pages/MangeUsers";
 import RewardLogs from './pages/RewardLogs';
 import ViewIllegalDumpsites from './pages/ViewIllegalDumpsites';
 import CollectionHistory from "./pages/CollectionHistory";
+
 function App() {
   return (
     <Routes>
@@ -27,13 +28,14 @@ function App() {
       <Route path="/municipal/resolved-unresolved-cases" element={<ResolvedUnresolvedCases />} />
       <Route path="/admin/manage-users" element={<ManageUsers />} />
       <Route path="/rewards" element={<RewardLogs />} />
-       <Route path="/rewards-page" element={<RewardsPage />} />
+      <Route path="/rewards-page" element={<RewardsPage />} />
       <Route path="/report-dumpsite" element={<ReportDumpsite />} />
       <Route path="/admin/view-dumpsites" element={<ViewIllegalDumpsites />} />
+      <Route path="/municipal/view-dumpsites" element={<ViewIllegalDumpsites />} /> {/* ✅ NEW */}
       <Route path="/collector" element={<CollectorDashboard />} />
       <Route path="/collection-history" element={<CollectionHistory />} />
-<Route path="/admin" element={<AdminPanel />} />
-<Route path="/municipal" element={<MunicipalView />} />
+      <Route path="/admin" element={<AdminPanel />} />
+      <Route path="/municipal" element={<MunicipalView />} />
     </Routes>
   );
 }

@@ -1,60 +1,51 @@
-// src/pages/ViewIllegalDumpsites.tsx
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import './ViewIllegalDumpsites.css';
-// import { useEffect, useState } from 'react';
+
+interface Report {
+  report_id: number;
+  user_name: string;
+  report_location: string;
+  report_description: string;
+  created_at?: string;
+}
 
 function ViewIllegalDumpsites() {
-  const navigate = useNavigate();
-
-  // -----------------------------
-  // 🔒 Backend fetch placeholder
-  // Uncomment and configure this block when backend is ready
-  /*
-  const [dumpsites, setDumpsites] = useState([]);
+  const [reports, setReports] = useState<Report[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/dumpsites') // Replace with actual endpoint
-      .then((res) => res.json())
-      .then((data) => setDumpsites(data))
-      .catch((err) => console.error('Error fetching dumpsites:', err));
-  }, []);
-  */
+    const fetchReports = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const res = await fetch('http://localhost:5000/api/reports/illegal-dumpsite', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setReports(data.reports || []);
+      } catch (err) {
+        console.error('Error fetching reports:', err);
+      }
+    };
 
-  // Temporary dummy data or empty placeholder
-  const dumpsites: any[] = [];
+    fetchReports();
+  }, []);
 
   return (
-    <div className="admin-dumpsite-page">
-      {/* Top Bar */}
-      <header className="topbar">
-        <div className="nav-left">
-          <button onClick={() => navigate('/admin')}>Home</button>
-          <button disabled className="active-tab">Illegal Dumpsites</button>
+    <div className="dumpsite-view">
+      <h2>🧾 Reported Illegal Dumpsites</h2>
+      {reports.length === 0 ? (
+        <p>No reports found.</p>
+      ) : (
+        <div className="report-list">
+          {reports.map(report => (
+            <div key={report.report_id} className="report-card">
+              <p><strong>Reported by:</strong> {report.user_name}</p>
+              <p><strong>Location:</strong> {report.report_location}</p>
+              <p><strong>Description:</strong> {report.report_description}</p>
+              <p><strong>Reported At:</strong> {new Date(report.created_at || '').toLocaleString()}</p>
+            </div>
+          ))}
         </div>
-        <div className="nav-right">
-          <button className="logout-btn" onClick={() => navigate('/')}>Logout</button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="dumpsite-content">
-        <h1>Reported Illegal Dumpsites</h1>
-
-        <div className="dumpsite-grid">
-          {dumpsites.length === 0 ? (
-            <p>No reports available. Connect to backend to load data.</p>
-          ) : (
-            dumpsites.map((site: any) => (
-              <div key={site.report_id} className="dumpsite-card">
-                <h3>📍 {site.report_location}</h3>
-                <p><strong>Description:</strong> {site.report_description || 'No description provided.'}</p>
-                <p><strong>Reported:</strong> {new Date(site.reported_at).toLocaleString()}</p>
-                <p><strong>Reported By:</strong> User #{site.user_id}</p>
-              </div>
-            ))
-          )}
-        </div>
-      </main>
+      )}
     </div>
   );
 }
