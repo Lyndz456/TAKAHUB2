@@ -1,6 +1,14 @@
 // src/pages/BookPickup.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './BookPickup.css';
+
+interface Pickup {
+  request_id: number;
+  pickup_date: string;
+  location: string;
+  waste_type: string;
+  status: string;
+}
 
 function BookPickup() {
   const [pickupData, setPickupData] = useState({
@@ -9,9 +17,25 @@ function BookPickup() {
     wasteTypes: [] as string[],
   });
 
+  const [existingRequests, setExistingRequests] = useState<Pickup[]>([]);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [confirmation, setConfirmation] = useState('');
-  const [pickupId, setPickupId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const token = localStorage.getItem('token');
+
+  const fetchRequests = async () => {
+    if (!token) return;
+    const res = await fetch('http://localhost:5000/api/pickup/my-requests', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setExistingRequests(data.requests || []);
+  };
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPickupData({
@@ -35,43 +59,71 @@ function BookPickup() {
     setLoading(true);
     setConfirmation('');
 
+    const body = {
+      pickup_date: pickupData.date,
+      location: pickupData.location,
+      waste_type: pickupData.wasteTypes.join(', '),
+    };
+
+    const url = editingId
+      ? `http://localhost:5000/api/pickup/update/${editingId}`
+      : 'http://localhost:5000/api/pickup/submit';
+
+    const method = editingId ? 'PUT' : 'POST';
+
     try {
-      const token = localStorage.getItem('token'); // Ensure token is stored at login
-
-      if (!token) {
-        setConfirmation('Authentication required. Please log in.');
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch('http://localhost:5000/api/pickup/submit', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          pickup_date: pickupData.date,
-          location: pickupData.location,
-          waste_type: pickupData.wasteTypes.join(', '),
-        }),
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setPickupId(data.request.request_id);
-        setConfirmation(`✅ Pickup request submitted! Your ID is #${data.request.request_id}`);
+        setConfirmation(`✅ ${editingId ? 'Pickup updated' : 'Pickup submitted'} successfully`);
         setPickupData({ date: '', location: '', wasteTypes: [] });
+        setEditingId(null);
+        fetchRequests();
       } else {
-        setConfirmation(`❌ ${data.message || 'Pickup request failed.'}`);
+        setConfirmation(`❌ ${data.message || 'Failed'}`);
       }
     } catch (error) {
-      console.error('Submission error:', error);
-      setConfirmation('❌ An unexpected error occurred. Please try again.');
+      setConfirmation('❌ Server error');
     }
 
     setLoading(false);
+  };
+
+  const handleEdit = (req: Pickup) => {
+    setPickupData({
+      date: req.pickup_date,
+      location: req.location,
+      wasteTypes: req.waste_type.split(',').map((w) => w.trim()),
+    });
+    setEditingId(req.request_id);
+    setConfirmation(`Editing request #${req.request_id}`);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm('Are you sure you want to delete this request?')) return;
+
+    const res = await fetch(`http://localhost:5000/api/pickup/delete/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setConfirmation(`🗑️ Request #${id} deleted`);
+      fetchRequests();
+    } else {
+      setConfirmation(`❌ ${data.message}`);
+    }
   };
 
   return (
@@ -117,17 +169,32 @@ function BookPickup() {
         </div>
 
         <button type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit Request'}
+          {loading ? 'Processing...' : editingId ? 'Update Request' : 'Submit Request'}
         </button>
 
         {confirmation && <p className="confirmation fade-in">{confirmation}</p>}
       </form>
 
-      <footer className="pickup-footer fade-in">
-        <h3>♻️ Turn Trash Into Treasure!</h3>
-        <p>Every pickup you book earns you reward points 🌟.</p>
-        <p>Track your points, redeem them, and contribute to a cleaner community.</p>
-      </footer>
+      <section className="pickup-history fade-in">
+        <h2>📋 My Pickup Requests</h2>
+        {existingRequests.length === 0 ? (
+          <p>No pickups yet.</p>
+        ) : (
+          <ul>
+            {existingRequests.map((req) => (
+              <li key={req.request_id}>
+                <strong>Date:</strong> {req.pickup_date} | <strong>Location:</strong> {req.location} | <strong>Type:</strong> {req.waste_type} | <strong>Status:</strong> {req.status}
+                {req.status === 'pending' && (
+                  <>
+                    <button className="edit-btn" onClick={() => handleEdit(req)}>Edit</button>
+                    <button className="delete-btn" onClick={() => handleDelete(req.request_id)}>Delete</button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

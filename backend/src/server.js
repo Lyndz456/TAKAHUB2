@@ -7,6 +7,7 @@ const pickupRoutes = require('./routes/pickupRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const rewardRoutes = require('./routes/rewardRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const path = require('path');
 const cors = require('cors');
 
 const pool = require('./config/db');
@@ -25,6 +26,8 @@ app.use('/api/pickup', pickupRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/rewards', rewardRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

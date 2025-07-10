@@ -1,3 +1,4 @@
+// CollectorDashboard.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CollectorDashboard.css';
@@ -20,21 +21,18 @@ function CollectorDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
     fetch('http://localhost:5000/api/pickup/collector', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
-        const pending = data.requests.filter((r: any) => r.status === 'pending');
-        setRequests(pending || []);
+        setRequests(data.requests || []);
       })
       .catch((err) => console.error('❌ Error fetching pickups:', err));
   }, []);
 
   const handleAccept = async (id: number) => {
     const token = localStorage.getItem('token');
-
     try {
       const res = await fetch('http://localhost:5000/api/pickup/accept', {
         method: 'POST',
@@ -46,33 +44,53 @@ function CollectorDashboard() {
       });
 
       const data = await res.json();
-
       if (res.ok) {
         alert(`✅ Pickup #${id} accepted.`);
-        setRequests((prev) => prev.filter((req) => req.request_id !== id));
+        setRequests((prev) =>
+          prev.map((req) =>
+            req.request_id === id ? { ...req, status: 'accepted' } : req
+          )
+        );
       } else {
         alert(`❌ ${data.message}`);
       }
     } catch (err) {
       console.error('❌ Accept failed:', err);
-      alert('Failed to accept pickup');
     }
   };
 
-  const handleReject = (id: number) => {
-    if (!rejectionReasons[id]?.trim()) {
+  const handleReject = async (id: number) => {
+    const reason = rejectionReasons[id];
+    if (!reason?.trim()) {
       alert('Please provide a reason before rejecting.');
       return;
     }
 
-    // Ideally you also send this to backend, but here we're just removing
-    setRequests((prev) =>
-      prev.map((req) =>
-        req.request_id === id
-          ? { ...req, status: 'rejected', reason: rejectionReasons[id] }
-          : req
-      )
-    );
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch('http://localhost:5000/api/pickup/reject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ request_id: id, reason }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert(`❌ Pickup #${id} rejected.`);
+        setRequests((prev) =>
+          prev.map((req) =>
+            req.request_id === id ? { ...req, status: 'rejected', reason } : req
+          )
+        );
+      } else {
+        alert(data.message || 'Failed to reject pickup request.');
+      }
+    } catch (error) {
+      console.error('❌ Reject failed:', error);
+    }
   };
 
   const handleReasonChange = (id: number, reason: string) => {
@@ -99,37 +117,36 @@ function CollectorDashboard() {
         </div>
 
         <div className="welcome-box">
-          <h1>WELCOME!!</h1>
-          <h3>TODAY’S REQUESTS: {requests.length}</h3>
+          <h1>Welcome Collector! 👷‍♂️</h1>
+          <h3>Pending Requests: {requests.filter(r => r.status === 'pending').length}</h3>
         </div>
 
         <div className="requests-section">
-          {requests.map((req) => (
-            <div key={req.request_id} className="request-card">
-              <p><strong>Request ID:</strong> #{req.request_id}</p>
-              <p><strong>Date:</strong> {req.pickup_date}</p>
-              <p><strong>Location:</strong> {req.location}</p>
-              <p><strong>Waste Type:</strong> {req.waste_type}</p>
-              <p><strong>Resident:</strong> {req.resident_name || '(unknown)'}</p>
+          {requests
+            .filter((req) => req.status === 'pending')
+            .map((req) => (
+              <div key={req.request_id} className="request-card fade-in">
+                <div className="request-details">
+                  <p><strong>📦 Request #:</strong> {req.request_id}</p>
+                  <p><strong>📅 Date:</strong> {req.pickup_date}</p>
+                  <p><strong>📍 Location:</strong> {req.location}</p>
+                  <p><strong>♻️ Waste:</strong> {req.waste_type}</p>
+                  <p><strong>👤 Resident:</strong> {req.resident_name || '(unknown)'}</p>
+                </div>
 
-              <div className="btn-group">
-                <button className="accept" onClick={() => handleAccept(req.request_id)}>
-                  ✅ Accept
-                </button>
-                <button className="reject" onClick={() => handleReject(req.request_id)}>
-                  ❌ Reject
-                </button>
+                <div className="action-section">
+                  <button className="accept" onClick={() => handleAccept(req.request_id)}>✅ Accept</button>
+                  <button className="reject" onClick={() => handleReject(req.request_id)}>❌ Reject</button>
+                  <input
+                    type="text"
+                    placeholder="Reason for rejection"
+                    value={rejectionReasons[req.request_id] || ''}
+                    onChange={(e) => handleReasonChange(req.request_id, e.target.value)}
+                    className="reason-input"
+                  />
+                </div>
               </div>
-
-              <input
-                type="text"
-                placeholder="Enter rejection reason..."
-                value={rejectionReasons[req.request_id] || ''}
-                onChange={(e) => handleReasonChange(req.request_id, e.target.value)}
-                className="reason-input"
-              />
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

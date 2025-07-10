@@ -11,13 +11,12 @@ function ReportDumpsite() {
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    const target = e.target as HTMLInputElement;
-    const { name, value } = target;
-
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -34,19 +33,50 @@ function ReportDumpsite() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Report Submitted:', formData);
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  setConfirmation('');
 
-    // Simulate storage of dummy URL
-    const dummyImageUrl = previewUrl || 'https://dummyimage.com/300x200';
+  const token = localStorage.getItem('token');
+  if (!token) {
+    setConfirmation('⚠️ You must be logged in to report a dumpsite.');
+    return;
+  }
 
-    setConfirmation(`Dumpsite reported successfully! Thank you for keeping your community clean.`);
+  try {
+    const form = new FormData();
+    form.append('report_location', formData.location);
+    form.append('report_description', formData.description);
+    if (formData.image) {
+      form.append('image', formData.image);
+    }
 
-    // Reset form
-    setFormData({ location: '', description: '', image: null });
-    setPreviewUrl(null);
-  };
+    const res = await fetch('http://localhost:5000/api/report/illegal-dumpsite', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}` // ✅ Do not manually set Content-Type
+      },
+      body: form,
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setConfirmation('✅ Dumpsite reported successfully! Thank you for your effort.');
+      setFormData({ location: '', description: '', image: null });
+      setPreviewUrl(null);
+    } else {
+      setConfirmation(`❌ Failed to report: ${data.message || data.error}`);
+    }
+  } catch (err) {
+    console.error('Report error:', err);
+    setConfirmation('❌ Unexpected error. Try again.');
+  }
+
+  setLoading(false);
+};
+
 
   return (
     <div className="report-wrapper">
@@ -72,6 +102,7 @@ function ReportDumpsite() {
           onChange={handleChange}
           rows={4}
           placeholder="Describe the dump site..."
+          required
         />
 
         <label>Upload Image:</label>
@@ -84,9 +115,13 @@ function ReportDumpsite() {
           </div>
         )}
 
-        <button type="submit">Submit Report</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit Report'}
+        </button>
 
-        {confirmation && <p className="confirmation-message fade-in">{confirmation}</p>}
+        {confirmation && (
+          <p className="confirmation-message fade-in">{confirmation}</p>
+        )}
       </form>
     </div>
   );
