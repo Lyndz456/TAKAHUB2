@@ -1,22 +1,21 @@
-/* SortingGuide.css */
-
 .sorting-guide {
-  padding: 2rem;
+  padding: 1.5rem 1rem;
   font-family: 'Segoe UI', sans-serif;
   background-color: #f0fff4;
   min-height: 100vh;
   text-align: center;
+  overflow: hidden;
 }
 
 h1.slide-down {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
   animation: slideDown 1s ease-out;
 }
 
 .intro-text {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
   color: #333;
 }
 
@@ -24,60 +23,61 @@ h1.slide-down {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
 }
 
 .card {
   background-color: white;
-  padding: 1.5rem;
-  width: 280px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1rem;
+  width: 200px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   transition: transform 0.3s ease;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 .card h3 {
-  margin: 1rem 0 0.5rem;
-  font-size: 1.3rem;
+  margin: 0.8rem 0 0.4rem;
+  font-size: 1.1rem;
   color: #264d28;
 }
 
 .card p {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #444;
 }
 
 .emoji {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .footer-text {
-  font-size: 1.1rem;
-  color: #666;
-  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1rem;
 }
 
 .nav-buttons {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  gap: 1rem;
+  margin-top: 0.8rem;
 }
 
 .back-btn,
 .pickup-btn {
   background-color: #4caf50;
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1.2rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 0.9rem;
   transition: background-color 0.3s ease;
 }
 
@@ -89,7 +89,7 @@ h1.slide-down {
 /* Animations */
 @keyframes slideDown {
   from {
-    transform: translateY(-30px);
+    transform: translateY(-20px);
     opacity: 0;
   }
   to {
@@ -112,7 +112,7 @@ h1.slide-down {
 
 @keyframes slideInLeft {
   from {
-    transform: translateX(-100px);
+    transform: translateX(-60px);
     opacity: 0;
   }
   to {
@@ -123,7 +123,7 @@ h1.slide-down {
 
 @keyframes slideInRight {
   from {
-    transform: translateX(100px);
+    transform: translateX(60px);
     opacity: 0;
   }
   to {
@@ -138,5 +138,25 @@ h1.slide-down {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* Optional: mobile tweak */
+@media (max-width: 768px) {
+  .waste-cards {
+    gap: 0.8rem;
+  }
+
+  .card {
+    width: 160px;
+    padding: 0.8rem;
+  }
+
+  .card p {
+    font-size: 0.8rem;
+  }
+
+  .emoji {
+    font-size: 1.8rem;
   }
 }

@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-// Submit illegal dumpsite report (NO image upload)
+// 1. Submit illegal dumpsite report (no image)
 const reportIllegalDumpsite = async (req, res) => {
   try {
     const { report_location, report_description } = req.body;
@@ -22,7 +22,7 @@ const reportIllegalDumpsite = async (req, res) => {
   }
 };
 
-// Get all dumpsite reports (for municipal authority)
+// 2. Get all reports (for municipal view)
 const getAllDumpsiteReports = async (req, res) => {
   try {
     const result = await pool.query(
@@ -39,7 +39,7 @@ const getAllDumpsiteReports = async (req, res) => {
   }
 };
 
-// Get all dumpsite reports for the logged-in resident
+// 3. Get reports by logged-in resident
 const getResidentDumpsiteReports = async (req, res) => {
   try {
     const user_id = req.user.user_id;
@@ -58,7 +58,7 @@ const getResidentDumpsiteReports = async (req, res) => {
   }
 };
 
-// Mark a report as resolved
+// 4. Mark report as resolved
 const markDumpsiteResolved = async (req, res) => {
   try {
     const { report_id } = req.body;
@@ -82,11 +82,30 @@ const markDumpsiteResolved = async (req, res) => {
   }
 };
 
+// 5. Get stats (for municipal dashboard)
+const getDumpsiteStats = async (req, res) => {
+  try {
+    const totalResult = await pool.query(
+      'SELECT COUNT(*) FROM systemillegaldumpsitesreports'
+    );
+    const unresolvedResult = await pool.query(
+      'SELECT COUNT(*) FROM systemillegaldumpsitesreports WHERE is_resolved = false'
+    );
+
+    res.status(200).json({
+      total: parseInt(totalResult.rows[0].count, 10),
+      unresolved: parseInt(unresolvedResult.rows[0].count, 10),
+    });
+  } catch (error) {
+    console.error('Error fetching dumpsite stats:', error);
+    res.status(500).json({ error: 'Failed to fetch stats' });
+  }
+};
 
 module.exports = {
   reportIllegalDumpsite,
   getAllDumpsiteReports,
   getResidentDumpsiteReports,
-  markDumpsiteResolved
-
+  markDumpsiteResolved,
+  getDumpsiteStats,
 };

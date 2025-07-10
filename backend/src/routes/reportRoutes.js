@@ -1,23 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const {
-  reportIllegalDumpsite,
-  getResidentDumpsiteReports,
-  getAllDumpsiteReports,
-  markDumpsiteResolved
-} = require('../controllers/reportController');
 const verifyToken = require('../middleware/authMiddleware');
 
-// Resident submits
+const {
+  reportIllegalDumpsite,
+  getAllDumpsiteReports,
+  getResidentDumpsiteReports,
+  markDumpsiteResolved,
+  getDumpsiteStats
+} = require('../controllers/reportController');
+
+// ✅ Submit new dumpsite report
 router.post('/illegal-dumpsite', verifyToken, reportIllegalDumpsite);
 
-// Resident views their own reports
+// ✅ Get all reports (for municipal authority)
+router.get('/illegal-dumpsite', verifyToken, getAllDumpsiteReports);
+
+// ✅ Get stats (total & unresolved)
+router.get('/illegal-dumpsite/stats', verifyToken, getDumpsiteStats);
+
+// ✅ Get logged-in resident's reports
 router.get('/my-reports', verifyToken, getResidentDumpsiteReports);
 
-// Municipal views all
-router.get('/all-reports', verifyToken, getAllDumpsiteReports);
-
-// Municipal marks report resolved
-router.post('/resolve', verifyToken, markDumpsiteResolved);
+// ✅ Resolve a report (by ID in URL)
+router.put('/resolve', verifyToken, markDumpsiteResolved);
 
 module.exports = router;

@@ -1,211 +1,201 @@
-.pickup-wrapper {
-  max-width: 650px;
-  margin: 2rem auto;
-  padding: 2rem;
+/* Full page layout */
+.pickup-page {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #fefefc;
-  border-radius: 12px;
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.07);
-}
-
-.pickup-banner {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.pickup-banner h1 {
-  color: #317e4e;
-  font-size: 2rem;
-  margin-bottom: 0.3rem;
-}
-
-.pickup-banner p {
-  color: #555;
-  font-size: 1rem;
-}
-
-.pickup-form {
+  background-color: #f3f5f4;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* Top Navbar */
+.pickup-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #245c36;
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pickup-navbar h2 {
+  font-size: 1.5rem;
+}
+
+.pickup-navbar nav button {
+  background: white;
+  color: #245c36;
+  border: none;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.pickup-navbar nav button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Main layout */
+.pickup-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  justify-content: center;
+}
+
+/* Form Section */
+.pickup-form-section {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.pickup-form h1 {
+  font-size: 1.8rem;
+  color: #245c36;
+  margin-bottom: 1rem;
+}
+
 .pickup-form label {
+  display: block;
   margin-top: 1rem;
   font-weight: bold;
   color: #333;
 }
 
-.pickup-form input,
-.pickup-form select {
-  padding: 0.7rem;
-  border-radius: 6px;
-  border: 1px solid #aaa;
-  margin-top: 0.3rem;
+.pickup-form input[type="date"],
+.pickup-form input[type="text"] {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 0.5rem;
 }
 
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.95rem;
+}
+
+/* Submit Button */
 .pickup-form button {
   margin-top: 1.5rem;
-  background-color: #56ab2f;
+  background-color: #245c36;
   color: white;
-  padding: 0.8rem;
   border: none;
+  padding: 0.75rem 1.2rem;
   border-radius: 8px;
-  font-weight: bold;
   cursor: pointer;
-}
-
-.confirmation {
-  color: #28a745;
-  margin-top: 1rem;
   font-weight: bold;
-  text-align: center;
+  transition: background 0.3s ease;
 }
 
-/* Footer */
-.pickup-footer {
-  text-align: center;
-  margin-top: 2.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #ccc;
-  font-size: 0.95rem;
-  color: #444;
+.pickup-form button:hover {
+  background-color: #1d4b2c;
 }
 
-.pickup-footer h3 {
-  color: #204e2a;
-  margin-bottom: 0.5rem;
+/* Confirmation Message */
+.confirmation {
+  margin-top: 1rem;
+  color: #245c36;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease;
 }
 
-/* Animations */
-.slide-down {
-  animation: slideDown 0.7s ease-out;
+/* Pickup History Section */
+.pickup-history-section {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
-.slide-in {
-  animation: slideIn 0.7s ease-out;
-}
-
-.fade-in {
-  animation: fadeIn 1s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-40px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.pickup-history {
-  margin-top: 2rem;
-  padding: 1rem 2rem;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.pickup-history h2 {
+.pickup-history-section h2 {
+  color: #245c36;
   margin-bottom: 1rem;
-  color: #2d3e50;
 }
 
-.pickup-history ul {
+.pickup-history-section ul {
   list-style: none;
   padding: 0;
 }
 
-.pickup-history li {
+.pickup-history-section li {
   background-color: #f9f9f9;
   margin-bottom: 1rem;
   padding: 1rem;
-  border-radius: 12px;
-  border-left: 5px solid #56ab2f;
-  position: relative;
-}
-
-.pickup-history li strong {
-  color: #2e3d49;
-}
-
-.pickup-history li .status {
-  display: inline-block;
-  margin-left: 0.5rem;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  background-color: #e2e3e5;
+  border-left: 4px solid #245c36;
+  border-radius: 8px;
+  font-size: 0.95rem;
   color: #333;
 }
 
-.status.pending {
-  background-color: #ffecb3;
-  color: #a07900;
+.action-btns {
+  margin-top: 0.5rem;
 }
 
-.status.accepted {
-  background-color: #d1ecf1;
-  color: #0c5460;
-}
-
-.status.completed {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status.rejected {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.edit-btn,
-.delete-btn {
-  margin-left: 10px;
-  padding: 6px 12px;
-  font-size: 0.85rem;
+.action-btns button {
+  margin-right: 0.5rem;
+  background-color: #ddd;
   border: none;
-  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  transition: background 0.3s ease;
 }
 
-.edit-btn {
-  background-color: #56ab2f;
-  color: white;
+.action-btns button:hover {
+  background-color: #ccc;
 }
 
-.delete-btn {
-  background-color: #e53935;
-  color: white;
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.edit-btn:hover {
-  background-color: #3b8920;
-}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .pickup-layout {
+    flex-direction: column;
+    padding: 1rem;
+  }
 
-.delete-btn:hover {
-  background-color: #c62828;
+  .pickup-form-section,
+  .pickup-history-section {
+    width: 100%;
+  }
+
+  .pickup-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .pickup-navbar nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 }

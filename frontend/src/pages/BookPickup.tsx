@@ -1,5 +1,6 @@
-// src/pages/BookPickup.tsx
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './BookPickup.css';
 
 interface Pickup {
@@ -11,6 +12,7 @@ interface Pickup {
 }
 
 function BookPickup() {
+  const navigate = useNavigate();
   const [pickupData, setPickupData] = useState({
     date: '',
     location: '',
@@ -126,75 +128,97 @@ function BookPickup() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
-    <div className="pickup-wrapper">
-      <div className="pickup-banner">
-        <h1 className="slide-down">📦 Book a Pickup</h1>
-        <p className="fade-in">Sort your waste, book your pickup, and earn points!</p>
-      </div>
+    <div className="pickup-page">
+      {/* Top Navigation */}
+      <header className="pickup-navbar">
+        <h2>♻️ TAKAHUB</h2>
+        <nav>
+          <button onClick={() => navigate('/resident')}> Home</button>
+          <button onClick={handleLogout}> Log Out</button>
+        </nav>
+      </header>
 
-      <form className="pickup-form slide-in" onSubmit={handleSubmit}>
-        <label>Pickup Date:</label>
-        <input
-          type="date"
-          name="date"
-          value={pickupData.date}
-          onChange={handleChange}
-          required
-        />
+      <motion.div
+        className="pickup-layout"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Form Section */}
+        <div className="pickup-form-section">
+          <motion.h1 initial={{ y: -20 }} animate={{ y: 0 }}>📦 Book a Pickup</motion.h1>
+          <form className="pickup-form" onSubmit={handleSubmit}>
+            <label>Pickup Date:</label>
+            <input
+              type="date"
+              name="date"
+              value={pickupData.date}
+              onChange={handleChange}
+              required
+            />
 
-        <label>Location:</label>
-        <input
-          type="text"
-          name="location"
-          placeholder="e.g., Umoja 1, Block 5"
-          value={pickupData.location}
-          onChange={handleChange}
-          required
-        />
+            <label>Location:</label>
+            <input
+              type="text"
+              name="location"
+              placeholder="e.g., Umoja 1, Block 5"
+              value={pickupData.location}
+              onChange={handleChange}
+              required
+            />
 
-        <label>Select Waste Types:</label>
-        <div className="checkbox-group">
-          {['organic', 'plastic', 'metal', 'e-waste', 'mixed'].map((type) => (
-            <label key={type}>
-              <input
-                type="checkbox"
-                value={type}
-                checked={pickupData.wasteTypes.includes(type)}
-                onChange={handleWasteChange}
-              />
-              {type.charAt(0).toUpperCase() + type.slice(1)}
-            </label>
-          ))}
+            <label>Select Waste Types:</label>
+            <div className="checkbox-group">
+              {['organic', 'plastic', 'metal', 'e-waste', 'mixed'].map((type) => (
+                <label key={type}>
+                  <input
+                    type="checkbox"
+                    value={type}
+                    checked={pickupData.wasteTypes.includes(type)}
+                    onChange={handleWasteChange}
+                  />
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </label>
+              ))}
+            </div>
+
+            <button type="submit" disabled={loading}>
+              {loading ? 'Processing...' : editingId ? 'Update Request' : 'Submit Request'}
+            </button>
+
+            {confirmation && <p className="confirmation">{confirmation}</p>}
+          </form>
         </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Processing...' : editingId ? 'Update Request' : 'Submit Request'}
-        </button>
-
-        {confirmation && <p className="confirmation fade-in">{confirmation}</p>}
-      </form>
-
-      <section className="pickup-history fade-in">
-        <h2>📋 My Pickup Requests</h2>
-        {existingRequests.length === 0 ? (
-          <p>No pickups yet.</p>
-        ) : (
-          <ul>
-            {existingRequests.map((req) => (
-              <li key={req.request_id}>
-                <strong>Date:</strong> {req.pickup_date} | <strong>Location:</strong> {req.location} | <strong>Type:</strong> {req.waste_type} | <strong>Status:</strong> {req.status}
-                {req.status === 'pending' && (
-                  <>
-                    <button className="edit-btn" onClick={() => handleEdit(req)}>Edit</button>
-                    <button className="delete-btn" onClick={() => handleDelete(req.request_id)}>Delete</button>
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+        {/* Request History Section */}
+        <div className="pickup-history-section">
+          <h2>📋 My Pickup Requests</h2>
+          {existingRequests.length === 0 ? (
+            <p>No pickups yet.</p>
+          ) : (
+            <ul>
+              {existingRequests.map((req) => (
+                <li key={req.request_id}>
+                  <strong>Date:</strong> {req.pickup_date} | <strong>Location:</strong> {req.location} <br />
+                  <strong>Type:</strong> {req.waste_type} | <strong>Status:</strong> {req.status}
+                  {req.status === 'pending' && (
+                    <div className="action-btns">
+                      <button onClick={() => handleEdit(req)}>Edit</button>
+                      <button onClick={() => handleDelete(req.request_id)}>Delete</button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </motion.div>
     </div>
   );
 }

@@ -1,36 +1,93 @@
-/* src/pages/ReportDumpsite.css */
+/* Full page styling */
+.report-page {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f7f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
+/* ✅ Top Navbar */
+.report-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #245c36;
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.report-navbar h2 {
+  font-size: 1.5rem;
+}
+
+.report-navbar nav button {
+  background: white;
+  color: #245c36;
+  border: none;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.report-navbar nav button:hover {
+  background-color: #e0e0e0;
+}
+
+/* ✅ Form Wrapper */
 .report-wrapper {
   padding: 2rem;
   max-width: 700px;
-  margin: 0 auto;
-  background-color: #f6fff6;
+  margin: 2rem auto;
+  background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 128, 0, 0.1);
-  animation: fadeIn 0.7s ease-in-out;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
 }
 
-.report-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+.report-wrapper h1 {
+  color: #245c36;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
 }
 
-.report-form input[type='text'],
+.report-wrapper p {
+  margin-bottom: 1.5rem;
+  color: #444;
+}
+
+/* ✅ Form Styling */
+.report-form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.report-form input[type="text"],
 .report-form textarea,
-.report-form input[type='file'] {
-  padding: 0.7rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
+.report-form input[type="file"] {
   width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.report-form textarea {
+  resize: vertical;
 }
 
 .report-form button {
-  background-color: #56ab2f;
+  margin-top: 1.5rem;
+  background-color: #245c36;
   color: white;
   border: none;
-  padding: 0.8rem 1.5rem;
+  padding: 0.75rem 1.2rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
@@ -38,67 +95,66 @@
 }
 
 .report-form button:hover {
-  background-color: #3b8c22;
+  background-color: #1e4b2e;
+}
+
+/* ✅ Image Preview */
+.image-preview {
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .image-preview img {
-  width: 100%;
-  max-height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 10px;
   margin-top: 0.5rem;
-  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* ✅ Confirmation Message */
 .confirmation-message {
-  background-color: #dfffdc;
-  padding: 1rem;
-  border-left: 5px solid #56ab2f;
-  border-radius: 6px;
-  color: #2f6627;
-  font-weight: 600;
+  margin-top: 1rem;
+  color: #245c36;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease;
 }
 
-/* Animations */
-@keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
+/* ✅ Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .slide-down {
-  animation: slideDown 0.5s ease forwards;
+  animation: slideDown 0.6s ease;
 }
 
-.slide-in {
-  animation: slideIn 0.5s ease forwards;
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .fade-in {
-  animation: fadeIn 0.6s ease forwards;
+  animation: fadeIn 0.6s ease;
+}
+
+/* ✅ Mobile Responsive */
+@media (max-width: 768px) {
+  .report-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .report-navbar nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .report-wrapper {
+    padding: 1.5rem;
+    margin: 1.5rem;
+  }
 }

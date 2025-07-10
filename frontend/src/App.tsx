@@ -15,6 +15,7 @@ import ManageUsers from "./pages/MangeUsers";
 import RewardLogs from './pages/RewardLogs';
 import ViewIllegalDumpsites from './pages/ViewIllegalDumpsites';
 import CollectionHistory from "./pages/CollectionHistory";
+import MyReports from './pages/MyReports';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
       <Route path="/collection-history" element={<CollectionHistory />} />
       <Route path="/admin" element={<AdminPanel />} />
       <Route path="/municipal" element={<MunicipalView />} />
+      <Route path="/resident/my-reports" element={<MyReports />} />
     </Routes>
   );
 }

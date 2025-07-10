@@ -96,3 +96,118 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.municipal-reports-page {
+  padding: 2rem;
+  background-color: #f5fdf5;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #d2f4d2;
+  padding: 1rem 2rem;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.logout-btn {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.reports-container {
+  margin-top: 2rem;
+}
+
+.reports-container h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #245c36;
+  margin-bottom: 2rem;
+}
+
+.reports-section {
+  margin-bottom: 3rem;
+}
+
+.reports-section h2 {
+  color: #2e7d32;
+  margin-bottom: 1rem;
+}
+
+.reports-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.report-card {
+  background-color: white;
+  padding: 1.5rem;
+  width: 300px;
+  border-left: 6px solid #1d3557;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.report-card:hover {
+  transform: translateY(-3px);
+}
+
+.report-card p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.status-label {
+  font-weight: bold;
+  color: #388e3c;
+}
+
+.resolve-btn {
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.resolve-btn:hover {
+  background-color: #45a049;
+}
+
+.report-footer {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.generate-report-btn {
+  background: linear-gradient(to right, #56ab2f, #a8e063);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.generate-report-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}

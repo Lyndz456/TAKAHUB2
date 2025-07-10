@@ -1,16 +1,24 @@
+// src/pages/ReportDumpsite.tsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ReportDumpsite.css';
 
 function ReportDumpsite() {
-  const [formData, setFormData] = useState({ location: '', description: '' });
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    location: '',
+    description: '',
+  });
+
   const [confirmation, setConfirmation] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -21,6 +29,7 @@ function ReportDumpsite() {
     const token = localStorage.getItem('token');
     if (!token) {
       setConfirmation('⚠️ You must be logged in to report a dumpsite.');
+      setLoading(false);
       return;
     }
 
@@ -34,10 +43,12 @@ function ReportDumpsite() {
         body: JSON.stringify({
           report_location: formData.location,
           report_description: formData.description,
+          image_url: null, // Image upload removed
         }),
       });
 
       const data = await res.json();
+
       if (res.ok) {
         setConfirmation('✅ Dumpsite reported successfully!');
         setFormData({ location: '', description: '' });
@@ -52,22 +63,61 @@ function ReportDumpsite() {
     setLoading(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
-    <div className="report-wrapper">
-      <h1>🗑️ Report Illegal Dumpsite</h1>
-      <form onSubmit={handleSubmit} className="report-form">
-        <label>Location:</label>
-        <input type="text" name="location" value={formData.location} onChange={handleChange} required />
+    <div className="report-page">
+      {/* Navigation Bar */}
+      <header className="report-navbar">
+        <h2>♻️ TAKAHUB</h2>
+        <nav>
+          <button onClick={() => navigate('/resident')}>Home</button>
+          <button onClick={handleLogout}>Log Out</button>
+        </nav>
+      </header>
 
-        <label>Description:</label>
-        <textarea name="description" value={formData.description} onChange={handleChange} required />
+      {/* Main Form */}
+      <div className="report-wrapper">
+        <h1 className="slide-down">🗑️ Report Illegal Dumpsite</h1>
+        <p className="fade-in">
+          Help keep your community clean by reporting a dumpsite in your area.
+        </p>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit Report'}
-        </button>
+        <form className="report-form slide-in" onSubmit={handleSubmit}>
+          <label htmlFor="location">Location:</label>
+          <input
+            id="location"
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+            placeholder="e.g. Kibera Sector 6"
+          />
 
-        {confirmation && <p className="confirmation-message">{confirmation}</p>}
-      </form>
+          <label htmlFor="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={4}
+            required
+            placeholder="e.g. Large trash pile near the road..."
+          />
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Submitting...' : 'Submit Report'}
+          </button>
+
+          {confirmation && (
+            <p className="confirmation-message fade-in">{confirmation}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

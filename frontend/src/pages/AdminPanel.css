@@ -1,140 +1,44 @@
-/* src/pages/AdminPanel.css */
-
-.admin-dashboard {
-  display: flex;
+.admin-report-page {
+  padding: 2rem;
+  background-color: #f4fff8;
+  font-family: 'Segoe UI', sans-serif;
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Sidebar */
-.sidebar {
-  background-color: #1f3d1f;
-  color: white;
-  width: 220px;
-  padding: 1.5rem 1rem;
-}
-
-.sidebar .logo {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.sidebar nav ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar nav ul li {
-  margin: 1rem 0;
-  cursor: pointer;
-  padding: 0.6rem 1rem;
-  border-radius: 5px;
-  transition: background 0.2s ease;
-}
-
-.sidebar nav ul li:hover {
-  background-color: #2e5c2e;
-}
-
-/* Main Area */
-.main-content {
-  flex: 1;
-  padding: 1rem 2rem;
-  background-color: #f3efeb;
-}
-
-/* Top Bar */
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
-  padding: 0.8rem 1.2rem;
-  border-bottom: 1px solid #ccc;
   margin-bottom: 2rem;
 }
 
-.nav-left button {
-  margin-right: 1rem;
-  background: none;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  color: #2d5e2d;
+.topbar h2 {
+  font-size: 1.5rem;
 }
 
-.nav-left .active-tab {
-  text-decoration: underline;
-  color: #000;
-}
-
-.logout-btn {
-  background-color: #d33;
-  color: white;
-  padding: 0.4rem 1rem;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.logout-btn:hover {
-  background-color: #b22;
-}
-
-/* Dashboard Body */
-.dashboard-body {
-  text-align: center;
-}
-
-.welcome-title {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-}
-
-.stats-box {
-  background: white;
+.report-content {
+  background-color: #ffffff;
   border-radius: 10px;
+  padding: 2rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  display: inline-block;
-  margin-bottom: 2rem;
 }
 
-.stats-box p {
-  margin: 0.4rem 0;
-  font-size: 1.1rem;
+.report-content h3 {
+  margin-top: 1.5rem;
+  color: #2d6a4f;
 }
 
-.stats-box strong {
+.generate-report-btn {
+  margin-top: 2rem;
+  background-color: #38b000;
+  color: white;
   font-weight: bold;
-  color: #2d5e2d;
-}
-
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.2rem;
-}
-
-.action-buttons button {
-  padding: 0.8rem 1.4rem;
-  background-color: #f0c87e;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.action-buttons button:hover {
-  background-color: #e4b75e;
-  transform: translateY(-2px);
-}
-.stats-box {
-  margin: 0 auto 2rem;
+.generate-report-btn:hover {
+  background-color: #2b9348;
 }
