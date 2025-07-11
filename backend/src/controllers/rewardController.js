@@ -29,6 +29,36 @@ const getUserRewards = async (req, res) => {
   }
 };
 
+
+// ✅ Admin: Get all residents' reward logs
+const getAllRewardLogs = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        u.user_id,
+        u.user_name,
+        u.user_email,
+        r.reward_points,
+        r.reward_badge,
+        (
+          SELECT COUNT(*) 
+          FROM systempickuprequests p 
+          WHERE p.user_id = u.user_id AND p.status = 'completed'
+        ) AS total_pickups
+      FROM systemrewards r
+      JOIN systemusers u ON r.user_id = u.user_id
+      WHERE u.role = 'resident'
+      ORDER BY r.reward_points DESC
+    `);
+
+    res.status(200).json({ logs: result.rows });
+  } catch (error) {
+    console.error('Error fetching reward logs:', error);
+    res.status(500).json({ message: 'Failed to fetch reward logs' });
+  }
+};
+
 module.exports = {
-  getUserRewards
+  getUserRewards,
+  getAllRewardLogs // ✅ export it here
 };

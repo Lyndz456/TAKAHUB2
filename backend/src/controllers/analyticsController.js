@@ -63,8 +63,31 @@ const getTopUsers = async (req, res) => {
   }
 };
 
+
+const getAdminStats = async (req, res) => {
+  try {
+    const users = await pool.query('SELECT COUNT(*) FROM systemusers');
+    const pickups = await pool.query("SELECT COUNT(*) FROM systempickuprequests WHERE status = 'completed'");
+    const badges = await pool.query("SELECT COUNT(*) FROM systemrewards WHERE reward_badge IS NOT NULL");
+    const reports = await pool.query("SELECT COUNT(*) FROM systemillegaldumpsitesreports");
+
+    res.status(200).json({
+      total_users: parseInt(users.rows[0].count),
+      total_pickups: parseInt(pickups.rows[0].count),
+      total_badges: parseInt(badges.rows[0].count),
+      total_reports: parseInt(reports.rows[0].count)
+    });
+  } catch (error) {
+  console.error('❌ Admin stats error:', error); // <== Add this
+  res.status(500).json({ error: 'Failed to fetch stats' });
+}
+
+};
+
+
 module.exports = {
   getWasteSummary,
   getRewardsSummary,
-  getTopUsers
+  getTopUsers,
+  getAdminStats // ✅ include this
 };
