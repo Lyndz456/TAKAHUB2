@@ -1,4 +1,3 @@
-// src/pages/ViewIllegalDumpsites.tsx
 import { useEffect, useState } from 'react';
 import './ViewIllegalDumpsites.css';
 
@@ -55,28 +54,39 @@ function ViewIllegalDumpsites() {
   }, []);
 
   return (
-    <div className="view-dumpsites-container">
-      <h1>🛑 Illegal Dumpsite Reports</h1>
+    <div className="view-dumpsites-wrapper">
+      {/* Topbar */}
+      <header className="admin-navbar">
+        <h2>♻️ <span className="brand-name">TAKAHUB</span></h2>
+        <nav>
+          <button onClick={() => window.history.back()}>Home</button>
+          <button onClick={() => window.location.href = '/'}>Logout</button>
+        </nav>
+      </header>
 
-      {reports.length === 0 ? (
-        <p>No reports available.</p>
-      ) : (
-        reports.map((report) => (
-          <div key={report.report_id} className="report-card">
-            <p><strong>Location:</strong> {report.report_location}</p>
-            <p><strong>Description:</strong> {report.report_description}</p>
-            <p><strong>Reported by:</strong> {report.reporter_name || 'Unknown'}</p>
-            <p><strong>Date:</strong> {new Date(report.reported_at).toLocaleString()}</p>
-            <p><strong>Status:</strong> {report.is_resolved ? '✅ Resolved' : '❌ Unresolved'}</p>
+      <div className="view-dumpsites-container">
+        <h1>🛑 Illegal Dumpsite Reports</h1>
 
-            {!report.is_resolved && (
-              <button className="resolve-btn" onClick={() => handleResolve(report.report_id)}>
-                ✔️ Mark as Resolved
-              </button>
-            )}
-          </div>
-        ))
-      )}
+        {reports.length === 0 ? (
+          <p>No reports available.</p>
+        ) : (
+          reports.map((report) => (
+            <div key={report.report_id} className="report-card">
+              <p><strong>Location:</strong> {report.report_location}</p>
+              <p><strong>Description:</strong> {report.report_description}</p>
+              <p><strong>Reported by:</strong> {report.reporter_name || 'Unknown'}</p>
+              <p><strong>Date:</strong> {new Date(report.reported_at).toLocaleString()}</p>
+              <p><strong>Status:</strong> {report.is_resolved ? '✅ Resolved' : '❌ Unresolved'}</p>
+
+              {!report.is_resolved && (
+                <button className="resolve-btn" onClick={() => handleResolve(report.report_id)}>
+                  ✔️ Mark as Resolved
+                </button>
+              )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

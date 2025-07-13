@@ -211,3 +211,42 @@
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
+.admin-navbar {
+  background-color: #245c36;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.admin-navbar h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-navbar nav button {
+  background: white;
+  color: #245c36;
+  border: none;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.admin-navbar nav button:hover {
+  background-color: #e0e0e0;
+}
+
+.brand-name {
+  font-weight: bold;
+}

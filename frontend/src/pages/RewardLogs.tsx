@@ -44,6 +44,10 @@ function RewardLogs() {
   useEffect(() => {
     fetchLogs();
   }, []);
+  const rewardLogs = [
+    { username: 'R23', email: 'resident1@example.com', points: 120, totalPickups: 3 },
+    { username: 'R58', email: 'resident2@example.com', points: 200, totalPickups: 5 },
+  ];
 
   const handleDownloadReport = () => {
     let report = 'TAKAHUB - Resident Reward Summary\n\n';
@@ -69,12 +73,13 @@ function RewardLogs() {
     <div className="reward-logs-page">
       <header className="topbar">
         <div className="nav-left">
+      {/* Custom Topbar with Branding */}
+      <header className="admin-navbar">
+        <h2>♻️ <span className="brand-name">TAKAHUB</span></h2>
+        <nav>
           <button onClick={() => navigate('/admin')}>Home</button>
-          <button disabled className="active-tab">Reward Logs</button>
-        </div>
-        <div className="nav-right">
-          <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
-        </div>
+          <button onClick={() => navigate('/')}>Logout</button>
+        </nav>
       </header>
 
       <main className="logs-container">
@@ -99,6 +104,20 @@ function RewardLogs() {
                 </div>
               ))}
             </div>
+        <div className="logs-grid">
+          {rewardLogs.length === 0 ? (
+            <p className="empty-msg">No reward logs available.</p>
+          ) : (
+            rewardLogs.map((log, index) => (
+              <div className="log-card" key={index}>
+                <h3>{log.username}</h3>
+                <p><strong>Email:</strong> {log.email}</p>
+                <p><strong>Total Points:</strong> {log.points}</p>
+                <p><strong>Pickups:</strong> {log.totalPickups}</p>
+              </div>
+            ))
+          )}
+        </div>
 
             <div className="download-section">
               <button className="download-btn" onClick={handleDownloadReport}>

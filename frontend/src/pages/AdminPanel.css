@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 /* src/pages/AdminPanel.css */
 
 .admin-dashboard {
   display: flex;
+=======
+.admin-page {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f3f5f4;
+>>>>>>> cb40a20c6b9a708209b2a3f857183ac5e64871da
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+<<<<<<< HEAD
 /* Sidebar */
 .sidebar {
   background-color: #1f3d1f;
@@ -75,10 +82,37 @@
   padding: 0.4rem 1rem;
   border: none;
   border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
+=======
+/* Topbar */
+.admin-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #245c36;
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.6s ease;
 }
 
+.admin-navbar h2 {
+  font-size: 1.5rem;
+}
+
+.admin-navbar nav button {
+  background: white;
+  color: #245c36;
+  border: none;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+>>>>>>> cb40a20c6b9a708209b2a3f857183ac5e64871da
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+<<<<<<< HEAD
 .logout-btn:hover {
   background-color: #b22;
 }
@@ -137,4 +171,98 @@
 }
 .stats-box {
   margin: 0 auto 2rem;
+=======
+.admin-navbar nav button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Dashboard Body */
+.admin-dashboard-body {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+.admin-dashboard-body h1 {
+  color: #245c36;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+}
+
+.stats-box {
+  margin-bottom: 2rem;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.stats-box p {
+  font-size: 1.05rem;
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.admin-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.admin-action-buttons button {
+  background-color: #245c36;
+  color: white;
+  padding: 0.75rem 1.3rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.admin-action-buttons button:hover {
+  background-color: #1b3e2c;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .admin-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .admin-navbar nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .admin-dashboard-body {
+    padding: 1rem;
+  }
+
+  .admin-action-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+>>>>>>> cb40a20c6b9a708209b2a3f857183ac5e64871da
 }

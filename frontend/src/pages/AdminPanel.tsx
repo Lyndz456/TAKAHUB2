@@ -1,3 +1,4 @@
+// AdminPanel.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminPanel.css';
@@ -39,20 +40,17 @@ function AdminPanel() {
   }, []);
 
   return (
-    <div className="admin-dashboard">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="logo">♻️</div>
-        <nav>
-          <ul>
-            <li>Overview</li>
-            <li>Users</li>
-            <li>Pickups</li>
-            <li>Rewards</li>
-            <li>Dumpsites</li>
-          </ul>
-        </nav>
-      </aside>
+    <div className="admin-page">
+      {/* Book-Pickup-style Topbar */}
+      <div className="admin-navbar">
+  <h2>♻️ TAKAHUB</h2>
+  <nav>
+    <button onClick={() => navigate('/admin')}>Home</button>
+    
+    <button onClick={() => navigate('/')}>Logout</button>
+  </nav>
+</div>
+
 
       {/* Main Content */}
       <div className="main-content">
@@ -67,10 +65,15 @@ function AdminPanel() {
             <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
           </div>
         </header>
+      <div className="admin-dashboard-body">
+        <h1>WELCOME!!</h1>
 
-        {/* Welcome + Stats */}
-        <section className="dashboard-body">
-          <h1>WELCOME!!</h1>
+        <div className="stats-box">
+          <p>Total users: <strong>{totalUsers}</strong></p>
+          <p>Total waste sorted: <strong>{totalPickups}</strong></p>
+          <p>Total reward points: <strong>{totalBadges}</strong></p>
+          <p>Total dumpsite reports: <strong>{totalReports}</strong></p>
+        </div>
 
           <div className="stats-box">
             <p>Total users: <strong>{stats.total_users}</strong></p>
@@ -86,6 +89,12 @@ function AdminPanel() {
             <button className="admin-btn" onClick={() => navigate('/admin/view-dumpsites')}>View Illegal Dumpsites</button>
           </div>
         </section>
+        <div className="admin-action-buttons">
+          <button onClick={() => navigate('/admin/manage-users')}>Manage Users</button>
+          <button onClick={() => navigate('/rewards')}>View Reward Logs</button>
+          <button onClick={() => navigate('/municipal/resolved-unresolved-cases')}>Generate Reports</button>
+          <button onClick={() => navigate('/admin/view-dumpsites')}>View Illegal Dumpsites</button>
+        </div>
       </div>
     </div>
   );
