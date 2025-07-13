@@ -1,35 +1,55 @@
-/* src/pages/RewardLogs.css */
 .reward-logs-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   background: #f0f8f0;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.topbar {
+/* Styled Topbar */
+.admin-navbar {
+  background-color: #245c36;
+  color: white;
   display: flex;
   justify-content: space-between;
-  background: #56ab2f;
+  align-items: center;
   padding: 1rem 2rem;
-  color: white;
+  margin: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.topbar .nav-left button,
-.topbar .nav-right button {
-  background: none;
+.admin-navbar h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-navbar nav button {
+  background: white;
+  color: #245c36;
   border: none;
-  color: white;
-  margin-right: 1rem;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.topbar .active-tab {
-  text-decoration: underline;
+.admin-navbar nav button:hover {
+  background-color: #e0e0e0;
 }
 
 .logs-container {
-  padding: 2rem;
+  padding: 1rem 2rem 3rem;
+}
+
+.logs-container h1 {
+  color: #245c36;
+  margin-bottom: 1rem;
 }
 
 .logs-grid {
@@ -50,4 +70,25 @@
   color: #666;
   font-size: 1.1rem;
   padding-top: 2rem;
+}
+
+.download-section {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.download-btn {
+  background-color: #a7df8c;
+  color: #245c36;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #92cf76;
 }

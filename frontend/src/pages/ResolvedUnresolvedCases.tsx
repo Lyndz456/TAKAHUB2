@@ -89,14 +89,13 @@ function ResolvedUnresolvedCases() {
   return (
     <div className="municipal-reports-page">
       {/* Top Bar */}
-      <header className="topbar">
-        <div className="nav-left">
-          <button onClick={() => navigate('/municipal')}>Home</button>
-        </div>
-        <div className="nav-right">
-          <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
-        </div>
-      </header>
+      <header className="admin-navbar">
+  <h2>♻️ <span className="brand-name">TAKAHUB</span></h2>
+  <nav>
+    <button onClick={() => navigate('/municipal')}>Home</button>
+    <button onClick={() => navigate('/')}>Logout</button>
+  </nav>
+</header>
 
       {/* Page Content */}
       <main className="reports-container">

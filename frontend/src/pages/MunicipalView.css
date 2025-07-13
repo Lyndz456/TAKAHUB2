@@ -4,9 +4,10 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* Sidebar */
 .sidebar {
   width: 200px;
-  background-color: #245c36; /* TAKAHUB green */
+  background-color: #245c36;
   color: white;
   padding: 1.5rem 1rem;
 }
@@ -28,25 +29,30 @@
   font-weight: 500;
 }
 
+/* Main Area */
 .main-content {
   flex: 1;
-  background-color: #f9f9f9;
-  padding: 1.5rem;
+  background-color: #f3f5f4;
+  padding: 1.5rem 2rem;
 }
 
+/* Topbar */
 .topbar {
+  background-color: #245c36;
+  color: white;
+  padding: 0.8rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
 }
 
 .nav-left button {
-  margin-right: 1rem;
   background: none;
   border: none;
   font-weight: bold;
-  color: #245c36;
+  color: white;
   cursor: pointer;
 }
 
@@ -59,103 +65,128 @@
   cursor: pointer;
 }
 
-.dashboard-body {
+/* Welcome */
+.welcome-title {
+  font-size: 2.3rem;
+  color: #245c36;
+  text-align: center;
+  margin: 1.2rem auto;
+}
+
+/* Report Summary Box */
+.summary-box {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.2rem 2rem;
+  max-width: 500px;
+  margin: 1rem auto 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   text-align: center;
 }
 
-.welcome-title {
-  font-size: 2.5rem;
-  color: #245c36;
-  margin-bottom: 1.5rem;
-}
-
-.summary-box {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 1.5rem;
-  max-width: 600px;
-  margin: 0 auto 2rem auto;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-}
-
+/* Button in summary box */
 .check-reports-btn {
-  background-color: #eee;
+  background-color: #245c36;
+  color: white;
   border: none;
   padding: 0.7rem 1.2rem;
   font-weight: bold;
   margin-bottom: 1rem;
   cursor: pointer;
-  border-radius: 6px;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.pdf-btn, .map-btn {
-  background-color: #dbf0d0;
-  border: none;
-  padding: 0.7rem 1.2rem;
   border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #245c36;
-  box-shadow: 1px 2px 5px rgba(0,0,0,0.1);
-}
-.report-card {
-  background-color: white;
-  padding: 15px;
-  margin-bottom: 12px;
-  border-left: 5px solid #4CAF50;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.report-preview-section {
-  max-width: 600px;
-  margin: 0 auto 2rem auto;
-  text-align: left;
+  transition: background 0.3s ease;
 }
 
-.report-footer {
-  text-align: center;
-  margin-bottom: 2rem;
+.check-reports-btn:hover {
+  background-color: #1a3b29;
 }
 
-.generate-report-btn {
-  background-color: #245c36;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-.dashboard-body > * {
-  margin-bottom: 1.5rem;
-}
-
+/* Reports Preview */
 .recent-reports-preview {
-  margin-top: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
 .recent-reports-preview h3 {
   margin-bottom: 1rem;
-  color: #2f4f4f;
+  color: #245c36;
 }
 
+/* Individual report card */
 .report-preview-card {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-left: 4px solid #245c36;
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 8px;
+  animation: fadeInSlide 0.4s ease-in-out;
 }
 
+/* Animations */
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-welcome {
+  animation: fadeInSlide 0.6s ease forwards;
+}
+
+.animate-box {
+  animation: fadeInSlide 0.6s ease 0.2s forwards;
+}
+
+.animate-slide {
+  animation: fadeInSlide 0.6s ease 0.4s forwards;
+}
+.admin-navbar {
+  background-color: #245c36;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-navbar h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-name {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.admin-navbar nav button {
+  background: white;
+  color: #245c36;
+  border: none;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.admin-navbar nav button:hover {
+  background-color: #e0e0e0;
+}

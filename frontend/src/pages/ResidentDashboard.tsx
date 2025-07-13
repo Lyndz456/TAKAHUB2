@@ -33,7 +33,6 @@ function ResidentDashboard() {
         setBadge(reward_badge || 'None');
         setPickups(total_pickups || 0);
 
-        // Animate points
         let current = 0;
         const step = Math.ceil((reward_points || 0) / 30);
         const interval = setInterval(() => {
@@ -64,7 +63,6 @@ function ResidentDashboard() {
         } else {
           setLatestRequest(null);
         }
-
       } catch (error) {
         console.error('❌ Error fetching dashboard data:', error);
       }
@@ -112,7 +110,7 @@ function ResidentDashboard() {
             <li onClick={() => navigate('/book-pickup')}>📦 Pickups</li>
             <li onClick={() => navigate('/sorting-guide')}>📘 Sorting Guide</li>
             <li onClick={() => navigate('/rewards-page')}>🏆 Rewards</li>
-            <li onClick={() => navigate('/resident/my-reports')}>📄 My Dumpsite Reports</li> {/* ✅ NEW */}
+            <li onClick={() => navigate('/resident/my-reports')}>📄 My Dumpsite Reports</li>
           </ul>
         </nav>
       </aside>
@@ -121,13 +119,18 @@ function ResidentDashboard() {
         <header className="topbar">
           <div className="nav-left">
             <button onClick={() => navigate('/resident')}>Home</button>
-            <button onClick={() => navigate('/book-pickup')}>Book Pickup</button>
+            
           </div>
           <div className="nav-right">
-            <button className="logout-btn" onClick={() => {
-              logout();
-              navigate('/');
-            }}>Log Out</button>
+            <button
+              className="logout-btn"
+              onClick={() => {
+                logout();
+                navigate('/');
+              }}
+            >
+              Log Out
+            </button>
           </div>
         </header>
 
@@ -176,8 +179,6 @@ function ResidentDashboard() {
               🛑 Report Illegal Dumpsite
             </motion.button>
           </div>
-
-          
         </section>
       </div>
     </div>

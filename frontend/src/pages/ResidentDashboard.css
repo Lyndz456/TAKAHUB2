@@ -9,7 +9,7 @@
 /* Sidebar */
 .sidebar {
   width: 220px;
-  background-color: #245c36; /* TAKAHUB green */
+  background-color: #245c36;
   color: white;
   padding: 2rem 1rem;
   display: flex;
@@ -40,6 +40,44 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #245c36; /* ✅ SOLID green */
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin-bottom: 1.5rem;
+}
+
+.topbar button {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.topbar .logout-btn {
+  background-color: white;
+  color: #245c36;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.topbar .logout-btn:hover {
+  background-color: #e7f8ee;
+}
+
 /* Main Content */
 .main-content {
   flex-grow: 1;
@@ -47,39 +85,6 @@
   flex-direction: column;
   padding: 0;
   position: relative;
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-.topbar button {
-  background-color: transparent;
-  border: none;
-  font-size: 1rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  color: #245c36;
-  font-weight: bold;
-}
-
-.topbar .logout-btn {
-  background-color: #245c36;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-}
-
-.topbar .logout-btn:hover {
-  background-color: #1d4b2c;
 }
 
 /* Dashboard Body */
@@ -207,6 +212,8 @@
   cursor: pointer;
   margin-left: 1rem;
 }
+
+/* Logo text (sidebar only) */
 .logo {
   font-size: 2rem;
   font-weight: bold;

@@ -1,8 +1,9 @@
-// src/pages/ManageUsers.tsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ManageUsers.css';
 
 function ManageUsers() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,9 +24,13 @@ function ManageUsers() {
 
   return (
     <div className="manage-users-page">
-      <header className="topbar">
-        <h2>Manage Users</h2>
-      </header>
+      <div className="admin-navbar">
+        <h2>♻️ TAKAHUB</h2>
+        <nav>
+          <button onClick={() => navigate('/admin')}>Home</button>
+          <button onClick={() => navigate('/')}>Logout</button>
+        </nav>
+      </div>
 
       <main className="user-container">
         <section className="user-form-section">

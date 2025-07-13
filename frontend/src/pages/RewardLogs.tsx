@@ -5,14 +5,11 @@ import './RewardLogs.css';
 function RewardLogs() {
   const navigate = useNavigate();
 
-  // This will later come from the backend
   const rewardLogs = [
-    // Example dummy data (remove if using backend)
     { username: 'R23', email: 'resident1@example.com', points: 120, totalPickups: 3 },
     { username: 'R58', email: 'resident2@example.com', points: 200, totalPickups: 5 },
   ];
 
-  // Simulated download logic — will later be replaced with backend PDF export
   const handleDownloadReport = () => {
     let report = 'TAKAHUB - Resident Reward Summary\n\n';
     rewardLogs.forEach(log => {
@@ -21,7 +18,6 @@ function RewardLogs() {
 
     const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-
     const link = document.createElement('a');
     link.href = url;
     link.download = 'reward_logs.txt';
@@ -31,15 +27,13 @@ function RewardLogs() {
 
   return (
     <div className="reward-logs-page">
-      {/* Top Bar */}
-      <header className="topbar">
-        <div className="nav-left">
+      {/* Custom Topbar with Branding */}
+      <header className="admin-navbar">
+        <h2>♻️ <span className="brand-name">TAKAHUB</span></h2>
+        <nav>
           <button onClick={() => navigate('/admin')}>Home</button>
-          <button disabled className="active-tab">Reward Logs</button>
-        </div>
-        <div className="nav-right">
-          <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
-        </div>
+          <button onClick={() => navigate('/')}>Logout</button>
+        </nav>
       </header>
 
       <main className="logs-container">
@@ -47,7 +41,7 @@ function RewardLogs() {
 
         <div className="logs-grid">
           {rewardLogs.length === 0 ? (
-            <p className="empty-msg">No reward logs available. Connect to backend to display data.</p>
+            <p className="empty-msg">No reward logs available.</p>
           ) : (
             rewardLogs.map((log, index) => (
               <div className="log-card" key={index}>

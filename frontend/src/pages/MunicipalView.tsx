@@ -38,7 +38,7 @@ function MunicipalView() {
         });
         const data = await res.json();
         if (res.ok && data.reports) {
-          setRecentReports(data.reports.slice(0, 4)); // Show top 4 recent reports
+          setRecentReports(data.reports.slice(0, 4));
         }
       } catch (err) {
         console.error('Failed to fetch reports:', err);
@@ -57,42 +57,29 @@ function MunicipalView() {
         <nav>
           <ul>
             <li onClick={() => navigate('/municipal/view-dumpsites')}>View Dumpsites</li>
-            <li onClick={() => navigate('/municipal/resolved-unresolved-cases')}>
-              Resolved/Unresolved Cases
-            </li>
-            <li onClick={() => navigate('/municipal/logs')}>Export Logs</li>
+            <li onClick={() => navigate('/municipal/resolved-unresolved-cases')}> Resolved/Unresolved Cases </li>
+            
           </ul>
         </nav>
       </aside>
 
       {/* Main Area */}
       <div className="main-content">
-        <header className="topbar">
-          <div className="nav-left">
-            <button onClick={() => navigate('/municipal')}>Home</button>
-          </div>
-          <div className="nav-right">
-            <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
-          </div>
-        </header>
+        <header className="admin-navbar">
+  <h2>♻️ <span className="brand-name">TAKAHUB</span></h2>
+  <nav>
+    <button onClick={() => navigate('/municipal')}>Home</button>
+    <button onClick={() => navigate('/')}>Logout</button>
+  </nav>
+</header>
+
 
         <section className="dashboard-body">
-          <h1 className="welcome-title">WELCOME!!</h1>
+          <h1 className="welcome-title animate-welcome">WELCOME!!</h1>
 
-          <div className="summary-box">
-            <button
-              className="check-reports-btn"
-              onClick={() => navigate('/municipal/view-dumpsites')}
-            >
-              CHECK REPORTS
-            </button>
-            <p className="pending-info">
-              Total Reports: <strong>{stats.total}</strong><br />
-              Unresolved: <strong>{stats.unresolved}</strong>
-            </p>
-          </div>
 
-          <div className="recent-reports-preview">
+
+          <div className="recent-reports-preview animate-slide">
             <h3>📝 Latest Reports</h3>
             {recentReports.length === 0 ? (
               <p>No recent reports.</p>

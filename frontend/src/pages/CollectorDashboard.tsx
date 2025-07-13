@@ -1,4 +1,3 @@
-// CollectorDashboard.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CollectorDashboard.css';
@@ -100,20 +99,24 @@ function CollectorDashboard() {
   return (
     <div className="collector-dashboard">
       <div className="sidebar">
-  <h2 className="logo">♻️ <span className="brand-name">TAKAHUB</span></h2>
-  <nav>
-    <ul>
-      <li onClick={() => navigate('/collector')}>🏠 Dashboard</li>
-      <li onClick={() => navigate('/collector/pickup-requests')}>📦 Pickup Requests</li>
-      <li onClick={() => navigate('/collection-history')}>📜 Collection History</li>
-    </ul>
-  </nav>
-</div>
+        <h2 className="logo">♻️ <span className="brand-name">TAKAHUB</span></h2>
+        <nav>
+          <ul>
+            <li onClick={() => navigate('/collector')}>🏠 Home</li>
+            <li onClick={() => navigate('/collector/pickup-requests')}>📦 Pickup Requests</li>
+            <li onClick={() => navigate('/collection-history')}>📜 Collection History</li>
+          </ul>
+        </nav>
+      </div>
 
       <div className="main-area">
         <div className="topbar">
-          <span className="topbar-title">Collector Dashboard</span>
-          <button className="logout-btn" onClick={() => navigate('/')}>Logout</button>
+          <div className="topbar-left">
+            <button className="home-link" onClick={() => navigate('/')}>Home</button>
+          </div>
+          <div className="topbar-right">
+            <button className="logout-btn" onClick={() => navigate('/')}>Logout</button>
+          </div>
         </div>
 
         <div className="welcome-box">
