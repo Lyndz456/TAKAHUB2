@@ -58,6 +58,7 @@ const getResidentDumpsiteReports = async (req, res) => {
   }
 };
 
+
 // 4. Mark report as resolved
 const markDumpsiteResolved = async (req, res) => {
   try {

@@ -1,88 +1,10 @@
-<<<<<<< HEAD
-/* src/pages/AdminPanel.css */
-
-.admin-dashboard {
-  display: flex;
-=======
 .admin-page {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f3f5f4;
->>>>>>> cb40a20c6b9a708209b2a3f857183ac5e64871da
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-<<<<<<< HEAD
-/* Sidebar */
-.sidebar {
-  background-color: #1f3d1f;
-  color: white;
-  width: 220px;
-  padding: 1.5rem 1rem;
-}
-
-.sidebar .logo {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.sidebar nav ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar nav ul li {
-  margin: 1rem 0;
-  cursor: pointer;
-  padding: 0.6rem 1rem;
-  border-radius: 5px;
-  transition: background 0.2s ease;
-}
-
-.sidebar nav ul li:hover {
-  background-color: #2e5c2e;
-}
-
-/* Main Area */
-.main-content {
-  flex: 1;
-  padding: 1rem 2rem;
-  background-color: #f3efeb;
-}
-
-/* Top Bar */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: white;
-  padding: 0.8rem 1.2rem;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 2rem;
-}
-
-.nav-left button {
-  margin-right: 1rem;
-  background: none;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  color: #2d5e2d;
-}
-
-.nav-left .active-tab {
-  text-decoration: underline;
-  color: #000;
-}
-
-.logout-btn {
-  background-color: #d33;
-  color: white;
-  padding: 0.4rem 1rem;
-  border: none;
-  border-radius: 5px;
-=======
 /* Topbar */
 .admin-navbar {
   display: flex;
@@ -106,72 +28,11 @@
   margin-left: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 8px;
->>>>>>> cb40a20c6b9a708209b2a3f857183ac5e64871da
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
-<<<<<<< HEAD
-.logout-btn:hover {
-  background-color: #b22;
-}
-
-/* Dashboard Body */
-.dashboard-body {
-  text-align: center;
-}
-
-.welcome-title {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-}
-
-.stats-box {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  display: inline-block;
-  margin-bottom: 2rem;
-}
-
-.stats-box p {
-  margin: 0.4rem 0;
-  font-size: 1.1rem;
-}
-
-.stats-box strong {
-  font-weight: bold;
-  color: #2d5e2d;
-}
-
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.2rem;
-}
-
-.action-buttons button {
-  padding: 0.8rem 1.4rem;
-  background-color: #f0c87e;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.action-buttons button:hover {
-  background-color: #e4b75e;
-  transform: translateY(-2px);
-}
-.stats-box {
-  margin: 0 auto 2rem;
-=======
 .admin-navbar nav button:hover {
   background-color: #e0e0e0;
 }
@@ -264,5 +125,4 @@
     flex-direction: column;
     gap: 0.8rem;
   }
->>>>>>> cb40a20c6b9a708209b2a3f857183ac5e64871da
 }

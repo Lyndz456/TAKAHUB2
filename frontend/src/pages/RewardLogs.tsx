@@ -71,16 +71,14 @@ function RewardLogs() {
 
   return (
     <div className="reward-logs-page">
-      <header className="topbar">
-        <div className="nav-left">
-      {/* Custom Topbar with Branding */}
       <header className="admin-navbar">
-        <h2>♻️ <span className="brand-name">TAKAHUB</span></h2>
-        <nav>
-          <button onClick={() => navigate('/admin')}>Home</button>
-          <button onClick={() => navigate('/')}>Logout</button>
-        </nav>
-      </header>
+  <h2>♻️ <span className="brand-name">TAKAHUB</span></h2>
+  <nav>
+    <button onClick={() => navigate('/admin')}>Home</button>
+    <button onClick={() => navigate('/')}>Logout</button>
+  </nav>
+</header>
+
 
       <main className="logs-container">
         <h1>Resident Reward Logs</h1>
