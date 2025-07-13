@@ -9,16 +9,49 @@ function ManageUsers() {
     role: 'resident',
   });
 
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder - will connect to backend
-    console.log('New user to be created:', formData);
-    alert(`User (${formData.role}) created successfully.`);
-    setFormData({ name: '', email: '', role: 'resident' });
+    setLoading(true);
+    setMessage('');
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setMessage('⚠️ You must be logged in as admin to perform this action.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:5000/api/users/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage(`✅ ${data.message}`);
+        setFormData({ name: '', email: '', role: 'resident' });
+      } else {
+        setMessage(`❌ ${data.message || data.error}`);
+      }
+    } catch (err) {
+      console.error('Add user error:', err);
+      setMessage('❌ Failed to connect to server.');
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -50,15 +83,20 @@ function ManageUsers() {
             <select name="role" value={formData.role} onChange={handleChange}>
               <option value="resident">Resident</option>
               <option value="collector">Collector</option>
-              <option value="municipal">Municipal Authority</option>
+              <option value="municipal authority">Municipal Authority</option>
+              <option value="admin">Admin</option>
             </select>
-            <button type="submit">Add User</button>
+            <button type="submit" disabled={loading}>
+              {loading ? 'Creating...' : 'Add User'}
+            </button>
           </form>
+
+          {message && <p className="confirmation-msg">{message}</p>}
         </section>
 
         <section className="user-list-section">
-          <h3>All Users (Coming Soon)</h3>
-          <p>This section will show all users grouped by role once backend is connected.</p>
+          <h3>All Users </h3>
+          <p>New Users Have Been Added To the Database.</p>
         </section>
       </main>
     </div>

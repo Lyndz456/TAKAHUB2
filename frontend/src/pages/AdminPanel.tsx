@@ -5,49 +5,33 @@ import './AdminPanel.css';
 function AdminPanel() {
   const navigate = useNavigate();
 
-  const [totalUsers, setTotalUsers] = useState('...');
-  const [totalPickups, setTotalPickups] = useState('...');
-  const [totalBadges, setTotalBadges] = useState('...');
-  const [totalReports, setTotalReports] = useState('...');
+  const [stats, setStats] = useState({
+    total_users: 0,
+    total_pickups: 0,
+    total_badges: 0,
+    total_reports: 0,
+  });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
     const fetchAdminStats = async () => {
+      const token = localStorage.getItem('token');
+
       try {
-        const rewardsRes = await fetch('http://localhost:5000/api/analytics/rewards-summary', {
-          headers: { Authorization: `Bearer ${token}` }
+        const res = await fetch('http://localhost:5000/api/analytics/admin-stats', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        const rewardsData = await rewardsRes.json();
 
-        if (rewardsRes.ok) {
-          setTotalUsers(rewardsData.data.total_users || '0');
-          setTotalBadges(rewardsData.data.total_points_distributed || '0');
-        }
+        const data = await res.json();
 
-        const wasteRes = await fetch('http://localhost:5000/api/analytics/waste-summary', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const wasteData = await wasteRes.json();
-
-        if (wasteRes.ok) {
-          const total =
-            parseFloat(wasteData.data.total_plastic || 0) +
-            parseFloat(wasteData.data.total_organic || 0) +
-            parseFloat(wasteData.data.total_hazardous || 0);
-          setTotalPickups(total.toFixed(2) + ' kg');
-        }
-
-        const reportsRes = await fetch('http://localhost:5000/api/reports/illegal-dumpsite/stats', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const reportsData = await reportsRes.json();
-
-        if (reportsRes.ok) {
-          setTotalReports(reportsData.total || '0');
+        if (res.ok) {
+          setStats(data);
+        } else {
+          console.error('❌ Backend responded with error:', data.error);
         }
       } catch (err) {
-        console.error('Failed to load admin stats:', err);
+        console.error('❌ Failed to fetch admin stats:', err);
       }
     };
 
@@ -76,7 +60,7 @@ function AdminPanel() {
         <header className="topbar">
           <div className="nav-left">
             <button onClick={() => navigate('/admin')}>Home</button>
-            <button onClick={() => navigate('/admin/manage-users')}>Users</button>
+            <button onClick={() => navigate('/admin/users')}>Users</button>
             <button onClick={() => navigate('/admin/reports')}>Reports</button>
           </div>
           <div className="nav-right">
@@ -89,10 +73,10 @@ function AdminPanel() {
           <h1>WELCOME!!</h1>
 
           <div className="stats-box">
-            <p>Total users: <strong>{totalUsers}</strong></p>
-            <p>Total waste sorted: <strong>{totalPickups}</strong></p>
-            <p>Total reward points: <strong>{totalBadges}</strong></p>
-            <p>Total dumpsite reports: <strong>{totalReports}</strong></p>
+            <p>Total users: <strong>{stats.total_users}</strong></p>
+            <p>Total pickups: <strong>{stats.total_pickups}</strong></p>
+            <p>Badges issued: <strong>{stats.total_badges}</strong></p>
+            <p>Reports: <strong>{stats.total_reports}</strong></p>
           </div>
 
           <div className="action-buttons">
