@@ -76,24 +76,27 @@ function MunicipalView() {
 
         <section className="dashboard-body">
           <h1 className="welcome-title animate-welcome">WELCOME!!</h1>
+<div className="reports-container animate-slide">
+  <h3 className="section-heading">📝 Latest Illegal Dumpsite Reports</h3>
+  {recentReports.length === 0 ? (
+    <p className="no-reports">No recent reports.</p>
+  ) : (
+    <div className="report-card-slider">
+      {recentReports.map((report, index) => (
+        <div key={report.report_id} className="report-card" style={{ animationDelay: `${index * 0.2}s` }}>
+          <h4>{report.report_location}</h4>
+          <p><strong>Description:</strong> {report.report_description}</p>
+          <p><strong>Status:</strong> {report.is_resolved ? '✅ Resolved' : '❌ Unresolved'}</p>
+          <p><strong>Reported:</strong> {new Date(report.reported_at).toLocaleString()}</p>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
 
 
-          <div className="recent-reports-preview animate-slide">
-            <h3>📝 Latest Reports</h3>
-            {recentReports.length === 0 ? (
-              <p>No recent reports.</p>
-            ) : (
-              recentReports.map((report) => (
-                <div key={report.report_id} className="report-preview-card">
-                  <p><strong>Location:</strong> {report.report_location}</p>
-                  <p><strong>Description:</strong> {report.report_description}</p>
-                  <p><strong>Status:</strong> {report.is_resolved ? '✅ Resolved' : '❌ Unresolved'}</p>
-                  <p><strong>Date:</strong> {new Date(report.reported_at).toLocaleString()}</p>
-                </div>
-              ))
-            )}
-          </div>
+         
         </section>
       </div>
     </div>

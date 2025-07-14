@@ -258,3 +258,56 @@
     padding: 0.5rem 0.8rem;
   }
 }
+
+.section-title {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #245c36;
+  animation: fadeIn 0.6s ease;
+}
+
+.request-id-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 14px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: white;
+}
+
+.status-badge.pending {
+  background-color: #f39c12;
+}
+
+.status-badge.accepted {
+  background-color: #27ae60;
+}
+
+.status-badge.rejected {
+  background-color: #e74c3c;
+}
+
+.accept:hover {
+  background-color: #3a9000;
+  transition: 0.3s ease;
+}
+
+.reject:hover {
+  background-color: #c0392b;
+  transition: 0.3s ease;
+}
+
+.reason-input:focus {
+  outline: none;
+  border-color: #245c36;
+  box-shadow: 0 0 3px #408b1caa;
+  transition: 0.2s ease;
+}

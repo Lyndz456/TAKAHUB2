@@ -125,34 +125,40 @@ function CollectorDashboard() {
         </div>
 
         <div className="requests-section">
-          {requests
-            .filter((req) => req.status === 'pending')
-            .map((req) => (
-              <div key={req.request_id} className="request-card fade-in">
-                <div className="request-details">
-                  <p><strong>📦 Request #:</strong> {req.request_id}</p>
-                  <p><strong>📅 Date:</strong> {req.pickup_date}</p>
-                  <p><strong>📍 Location:</strong> {req.location}</p>
-                  <p><strong>♻️ Waste:</strong> {req.waste_type}</p>
-                  <p><strong>👤 Resident:</strong> {req.resident_name || '(unknown)'}</p>
-                </div>
+  <h2 className="section-title">🚚 Pickup Requests</h2>
 
-                <div className="action-section">
-                  <button className="accept" onClick={() => handleAccept(req.request_id)}>✅ Accept</button>
-                  <button className="reject" onClick={() => handleReject(req.request_id)}>❌ Reject</button>
-                  <input
-                    type="text"
-                    placeholder="Reason for rejection"
-                    value={rejectionReasons[req.request_id] || ''}
-                    onChange={(e) => handleReasonChange(req.request_id, e.target.value)}
-                    className="reason-input"
-                  />
-                </div>
-              </div>
-            ))}
+  {requests
+    .filter((req) => req.status === 'pending')
+    .map((req) => (
+      <div key={req.request_id} className="request-card fade-in">
+        <div className="request-details">
+          <p className="request-id-line">
+            <strong>📦 Request #:</strong> {req.request_id}
+            <span className={`status-badge ${req.status}`}>{req.status}</span>
+          </p>
+          <p><strong>📅 Date:</strong> {req.pickup_date}</p>
+          <p><strong>📍 Location:</strong> {req.location}</p>
+          <p><strong>♻️ Waste:</strong> {req.waste_type}</p>
+          <p><strong>👤 Resident:</strong> {req.resident_name || '(unknown)'}</p>
+        </div>
+
+        <div className="action-section">
+          <button className="accept" onClick={() => handleAccept(req.request_id)}>✅ Accept</button>
+          <button className="reject" onClick={() => handleReject(req.request_id)}>❌ Reject</button>
+          <input
+            type="text"
+            placeholder="Reason for rejection"
+            value={rejectionReasons[req.request_id] || ''}
+            onChange={(e) => handleReasonChange(req.request_id, e.target.value)}
+            className="reason-input"
+          />
         </div>
       </div>
-    </div>
+    ))}
+</div>
+
+        </div>
+      </div>
   );
 }
 

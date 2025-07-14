@@ -99,10 +99,23 @@ function ManageUsers() {
           {message && <p className="confirmation-msg">{message}</p>}
         </section>
 
-        <section className="user-list-section">
-          <h3>All Users </h3>
-          <p>New Users Have Been Added To the Database.</p>
-        </section>
+        <section className="summary-section">
+  <h3>📊 User Roles Summary</h3>
+  <ul>
+    <li>🧍 Resident – Can book pickups, earn rewards</li>
+    <li>🚛 Collector – Accepts and manages pickups</li>
+    <li>🏙️ Municipal Authority – Reviews dumpsite reports</li>
+    <li>🛠️ Admin – Manages users and system</li>
+  </ul>
+</section>
+
+<section className="tips-section">
+  <h3>💡 Admin Tips</h3>
+  <p>✔ Fill in the full name and email.</p>
+  <p>✔ Select the appropriate role for the user.</p>
+  <p>✔ After creation, credentials will be auto-sent (if email enabled).</p>
+</section>
+
       </main>
     </div>
   );

@@ -190,3 +190,65 @@
 .admin-navbar nav button:hover {
   background-color: #e0e0e0;
 }
+
+.reports-container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.section-heading {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #245c36;
+  text-align: center;
+}
+
+.no-reports {
+  text-align: center;
+  color: #666;
+}
+
+.report-card-slider {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.report-card {
+  background-color: #f0fdf4;
+  border-left: 5px solid #245c36;
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem;
+  width: 260px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.07);
+  animation: slideInFade 0.5s ease forwards;
+  opacity: 0;
+}
+
+.report-card h4 {
+  margin: 0 0 0.5rem;
+  color: #245c36;
+  font-size: 1.2rem;
+}
+
+.report-card p {
+  font-size: 0.95rem;
+  margin: 0.3rem 0;
+}
+
+/* Animation */
+@keyframes slideInFade {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}

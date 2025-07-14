@@ -98,3 +98,38 @@
 .admin-navbar nav button:hover {
   background-color: #e0e0e0;
 }
+
+.summary-section,
+.tips-section {
+  flex: 1 1 45%;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  margin-top: 1rem;
+}
+
+.summary-section h3,
+.tips-section h3 {
+  margin-bottom: 1rem;
+  color: #245c36;
+  font-size: 1.2rem;
+}
+
+.summary-section ul {
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.summary-section li {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.tips-section p {
+  font-size: 0.95rem;
+  color: #444;
+  margin: 0.5rem 0;
+}
+

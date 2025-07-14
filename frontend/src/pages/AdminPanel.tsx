@@ -51,33 +51,41 @@ function AdminPanel() {
 
     {/* Main Content */}
     <div className="main-content">
-      <header className="topbar">
-        <div className="nav-left">
-          <button onClick={() => navigate('/admin')}>Home</button>
-          <button onClick={() => navigate('/admin/users')}>Users</button>
-          <button onClick={() => navigate('/admin/reports')}>Reports</button>
-        </div>
-        <div className="nav-right">
-          <button className="logout-btn" onClick={() => navigate('/')}>Log Out</button>
-        </div>
-      </header>
+      
 
       <div className="admin-dashboard-body">
         <h1>WELCOME!!</h1>
 
-        <div className="stats-box">
-          <p>Total users: <strong>{stats.total_users}</strong></p>
-          <p>Total pickups: <strong>{stats.total_pickups}</strong></p>
-          <p>Badges issued: <strong>{stats.total_badges}</strong></p>
-          <p>Reports: <strong>{stats.total_reports}</strong></p>
-        </div>
+        <div className="stats-grid">
+  <div className="stat-card users">
+    👥 <h4>{stats.total_users}</h4>
+    <p>Users Registered</p>
+  </div>
+  <div className="stat-card pickups">
+    🚛 <h4>{stats.total_pickups}</h4>
+    <p>Total Pickups</p>
+  </div>
+  <div className="stat-card badges">
+    🏅 <h4>{stats.total_badges}</h4>
+    <p>Badges Issued</p>
+  </div>
+  <div className="stat-card reports">
+    📄 <h4>{stats.total_reports}</h4>
+    <p>Dumpsite Reports</p>
+  </div>
+</div>
 
-        <div className="admin-action-buttons">
-          <button onClick={() => navigate('/admin/manage-users')}>Manage Users</button>
-          <button onClick={() => navigate('/rewards')}>View Reward Logs</button>
-          <button onClick={() => navigate('/municipal/resolved-unresolved-cases')}>Generate Reports</button>
-          <button onClick={() => navigate('/admin/view-dumpsites')}>View Illegal Dumpsites</button>
-        </div>
+
+       <div className="admin-section">
+  <h3>🛠️ Admin Actions</h3>
+  <div className="admin-action-buttons">
+    <button onClick={() => navigate('/admin/manage-users')}>Manage Users</button>
+    <button onClick={() => navigate('/rewards')}>View Reward Logs</button>
+    <button onClick={() => navigate('/municipal/resolved-unresolved-cases')}>Generate Reports</button>
+    <button onClick={() => navigate('/admin/view-dumpsites')}>View Illegal Dumpsites</button>
+  </div>
+</div>
+
       </div>
     </div>
   </div>
